@@ -1,280 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Sheep Counter - Sleep Helper</title>
- <style>
- body {
- background: linear-gradient(to bottom, #0a0a23, #1a1a3d);
- margin: 0;
- display: flex;
- flex-direction: column;
- align-items: center;
- min-height: 100vh;
- font-family: Arial, sans-serif;
- overflow: hidden;
- }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheep Counter - Sleep Helper</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1e1e4f, #3a3a6d); /* Deeper cartoonish night sky */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Comic Sans MS, cursive; /* Cartoonish font */
+            overflow: hidden;
+        }
 
- h1 {
- color: #ffffff;
- margin-top: 20px;
- text-shadow: 0 0 5px rgba(255,255,255,0.3);
- }
+        h1 {
+            color: #fffacd; /* Light yellow for cartoonish text */
+            margin-top: 20px;
+            text-shadow: 0 0 10px #ffeb3b; /* Bright yellow glow */
+            font-size: 2.5rem;
+            text-outline: 2px 2px #000; /* Bold outline for cartoon effect */
+        }
 
- #counter {
- color: #ffffff;
- font-size: 24px;
- margin: 20px;
- text-shadow: 0 0 5px rgba(255,255,255,0.3);
- }
+        #counter {
+            color: #fffacd;
+            font-size: 24px;
+            margin: 20px;
+            text-shadow: 0 0 10px #ffeb3b;
+            text-outline: 1px 1px #000;
+        }
 
- .scene {
- position: relative;
- width: 800px;
- height: 400px;
- overflow: hidden;
- }
+        .scene {
+            position: relative;
+            width: 800px;
+            height: 400px;
+            overflow: hidden;
+            border: 5px solid #000; /* Thick cartoon outline */
+            border-radius: 20px; /* Rounded edges */
+        }
 
- .sky {
- position: absolute;
- width: 100%;
- height: 100%;
- }
+        .sky {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #1e1e4f; /* Solid night sky base */
+        }
 
- .sky::before {
- content: '';
- position: absolute;
- width: 100%;
- height: 100%;
- background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.8"/><circle cx="200" cy="100" r="1" fill="white" opacity="0.6"/><circle cx="300" cy="30" r="2" fill="white" opacity="0.7"/><circle cx="450" cy="150" r="1" fill="white" opacity="0.5"/><circle cx="600" cy="80" r="2" fill="white" opacity="0.8"/><circle cx="700" cy="120" r="1" fill="white" opacity="0.6"/></svg>');
- }
+        .sky::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="5" fill="#fffacd" opacity="0.9"/><circle cx="200" cy="100" r="3" fill="#fffacd" opacity="0.8"/><circle cx="300" cy="30" r="4" fill="#fffacd" opacity="0.9"/><circle cx="450" cy="150" r="2" fill="#fffacd" opacity="0.7"/><circle cx="600" cy="80" r="5" fill="#fffacd" opacity="0.9"/><circle cx="700" cy="120" r="3" fill="#fffacd" opacity="0.8"/></svg>');
+            background-size: 100% 100%;
+        }
 
- .ground {
- position: absolute;
- bottom: 0;
- width: 100%;
- height: 80px;
- background: linear-gradient(to bottom, #2e7d32, #4caf50);
- border-top: 4px solid #1b5e20;
- }
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to bottom, #32cd32, #228b22); /* Vibrant green */
+            border-top: 5px solid #000; /* Thick outline */
+            border-radius: 0 0 20px 20px;
+        }
 
- .fence {
- position: absolute;
- bottom: 80px;
- left: 50%;
- transform: translateX(-50%);
- width: 120px;
- height: 80px;
- }
+        .fence {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 80px;
+            border: 5px solid #8b4513; /* Brown outline */
+            border-radius: 10px;
+            background: #d2b48c; /* Lighter wood color */
+        }
 
- .fence-post {
- position: absolute;
- width: 10px;
- height: 80px;
- background: #6d4c41;
- border: 1px solid #4e342e;
- }
+        .fence-post {
+            position: absolute;
+            width: 10px;
+            height: 80px;
+            background: #8b4513;
+            border: 2px solid #000; /* Thicker outline */
+        }
 
- .fence-post:nth-child(1) { left: 0; }
- .fence-post:nth-child(2) { right: 0; }
+        .fence-post:nth-child(1) { left: 0; }
+        .fence-post:nth-child(2) { right: 0; }
 
- .fence-rail {
- position: absolute;
- width: 120px;
- height: 10px;
- background: #6d4c41;
- border: 1px solid #4e342e;
- }
+        .fence-rail {
+            position: absolute;
+            width: 120px;
+            height: 10px;
+            background: #8b4513;
+            border: 2px solid #000;
+        }
 
- .fence-rail:nth-child(3) { top: 20px; }
- .fence-rail:nth-child(4) { top: 50px; }
+        .fence-rail:nth-child(3) { top: 20px; }
+        .fence-rail:nth-child(4) { top: 50px; }
 
- .sheep {
- position: absolute;
- bottom: 80px;
- left: -100px;
- width: 90px;
- height: 70px;
- animation: jump 2s infinite;
- }
+        .sheep {
+            position: absolute;
+            bottom: 80px;
+            left: -100px;
+            width: 90px;
+            height: 70px;
+            animation: jump 2s infinite;
+            outline: 3px solid #000; /* Bold cartoon outline */
+        }
 
- .sheep-body {
- position: absolute;
- width: 90px;
- height: 60px;
- background: #f5f5f5;
- border-radius: 50% 50% 40% 40%;
- box-shadow: 0 0 15px rgba(255,255,255,0.3);
- overflow: hidden;
- z-index: 1;
- }
+        .sheep-body {
+            position: absolute;
+            width: 90px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50% 50% 40% 40%;
+            overflow: hidden;
+            z-index: 1;
+        }
 
- .sheep-wool {
- position: absolute;
- width: 100%;
- height: 100%;
- background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="10" fill="white" opacity="0.9"/><circle cx="35" cy="10" r="12" fill="white" opacity="0.85"/><circle cx="55" cy="20" r="11" fill="white" opacity="0.9"/><circle cx="75" cy="15" r="10" fill="white" opacity="0.8"/><circle cx="25" cy="35" r="11" fill="white" opacity="0.85"/><circle cx="45" cy="45" r="12" fill="white" opacity="0.9"/><circle cx="65" cy="40" r="10" fill="white" opacity="0.8"/></svg>');
- background-size: cover;
- }
+        .sheep-wool {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path d="M10 10 Q15 5 20 10 T30 10 T40 15 T50 10 T60 15 T70 10 T80 15 Z" fill="#fff" opacity="0.9"/><path d="M15 20 Q20 15 25 20 T35 20 T45 25 T55 20 T65 25 T75 20 Z" fill="#fff" opacity="0.85"/></svg>');
+            background-size: cover;
+        }
 
- .sheep-head {
- position: absolute;
- width: 30px;
- height: 30px;
- background: #ffffff;
- border-radius: 50%;
- right: -20px;
- top: 5px;
- z-index: 2;
- box-shadow: 0 0 5px rgba(0,0,0,0.1);
- }
+        .sheep-head {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #2f2f4f; /* Dark blue face */
+            border-radius: 50%;
+            right: -15px;
+            top: 5px;
+            z-index: 2;
+            outline: 2px solid #000; /* Outline for head */
+        }
 
- .sheep-eye {
- position: absolute;
- width: 5px;
- height: 5px;
- background: #333333;
- border-radius: 50%;
- top: 12px;
- right: 10px;
- border: 1px solid #666666;
- }
+        .sheep-eye {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            top: 8px;
+            right: 8px;
+            border: 2px solid #000;
+        }
 
- .sheep-nose {
- position: absolute;
- width: 6px;
- height: 4px;
- background: #ff9999;
- border-radius: 50%;
- top: 20px;
- right: 15px;
- }
+        .sheep-eye::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #000;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+        }
 
- .sheep-ear {
- position: absolute;
- width: 15px;
- height: 20px;
- background: #e0e0e0;
- border-radius: 50% 50% 20% 20%;
- right: -28px;
- top: 10px;
- transform: rotate(40deg);
- box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
- z-index: 1;
- }
+        .sheep-nose {
+            position: absolute;
+            width: 6px;
+            height: 4px;
+            background: #ff4500; /* Orange nose */
+            border-radius: 50%;
+            top: 18px;
+            right: 12px;
+            border: 1px solid #000;
+        }
 
- .sheep-leg {
- position: absolute;
- width: 12px;
- height: 30px;
- background: #f5f5f5;
- border-radius: 0 0 10px 10px;
- bottom: -5px; /* Raised to overlap with body */
- z-index: 0; /* Behind body */
- box-shadow: 0 2px 4px rgba(0,0,0,0.1);
- transform-origin: top center;
- }
+        .sheep-ear {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: #2f2f4f;
+            border-radius: 50% 50% 20% 20%;
+            right: -20px;
+            top: 5px;
+            transform: rotate(40deg);
+            outline: 2px solid #000;
+            z-index: 1;
+        }
 
- .sheep-leg.front-left { left: 15px; }
- .sheep-leg.front-right { left: 30px; }
- .sheep-leg.back-left { left: 45px; }
- .sheep-leg.back-right { left: 60px; }
+        .sheep-leg {
+            position: absolute;
+            width: 12px;
+            height: 25px;
+            background: #2f2f4f;
+            border-radius: 0 0 5px 5px;
+            bottom: -5px;
+            z-index: 0;
+            outline: 2px solid #000;
+        }
 
- .sheep-tail {
- position: absolute;
- width: 15px;
- height: 15px;
- background: #f5f5f5;
- border-radius: 50% 20% 50% 20%;
- left: -5px;
- top: 35px;
- transform: rotate(-45deg);
- box-shadow: 0 0 5px rgba(255,255,255,0.3);
- z-index: 0;
- }
+        .sheep-leg::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            bottom: -5px;
+            left: 1px;
+        }
 
- @keyframes jump {
- 0% {
- transform: translateX(0) translateY(0) rotate(0deg);
- }
- 20% {
- transform: translateX(300px) translateY(-80px) rotate(5deg);
- }
- 40% {
- transform: translateX(400px) translateY(-140px) rotate(0deg);
- }
- 60% {
- transform: translateX(500px) translateY(-80px) rotate(-5deg);
- }
- 100% {
- transform: translateX(800px) translateY(0) rotate(0deg);
- }
- }
+        .sheep-leg.front-left { left: 15px; }
+        .sheep-leg.front-right { left: 30px; }
+        .sheep-leg.back-left { left: 45px; }
+        .sheep-leg.back-right { left: 60px; }
 
- @keyframes legMovement {
- 0%, 100% { transform: rotate(0deg); }
- 20% { transform: rotate(40deg); }
- 40% { transform: rotate(-20deg); }
- 60% { transform: rotate(20deg); }
- }
+        .sheep-tail {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            border-radius: 50% 20% 50% 20%;
+            left: -5px;
+            top: 35px;
+            outline: 2px solid #000;
+            z-index: 0;
+        }
 
- .sheep.animate .sheep-leg {
- animation: legMovement 0.5s infinite;
- }
- </style>
+        @keyframes jump {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+            20% {
+                transform: translateX(300px) translateY(-80px) rotate(5deg);
+            }
+            40% {
+                transform: translateX(400px) translateY(-140px) rotate(0deg);
+            }
+            60% {
+                transform: translateX(500px) translateY(-80px) rotate(-5deg);
+            }
+            100% {
+                transform: translateX(800px) translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes legMovement {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(40deg); }
+            40% { transform: rotate(-20deg); }
+            60% { transform: rotate(20deg); }
+        }
+
+        .sheep.animate .sheep-leg {
+            animation: legMovement 0.5s infinite;
+        }
+    </style>
 </head>
 <body>
- <h1>Count the Sheep to Sleep</h1>
- <div id="counter">Sheeps jumped: 0</div>
- <div class="scene">
- <div class="sky"></div>
- <div class="ground"></div>
- <div class="fence">
- <div class="fence-post"></div>
- <div class="fence-post"></div>
- <div class="fence-rail"></div>
- <div class="fence-rail"></div>
- </div>
- <div class="sheep">
- <div class="sheep-body">
- <div class="sheep-wool"></div>
- </div>
- <div class=" sheep-tail"></div>
- <div class="sheep-head">
- <div class="sheep-eye"></div>
- <div class="sheep-nose"></div>
- </div>
- <div class="sheep-ear"></div>
- <div class="sheep-leg front-left"></div>
- <div class="sheep-leg front-right"></div>
- <div class="sheep-leg back-left"></div>
- <div class="sheep-leg back-right"></div>
- </div>
- </div>
+    <h1>Count the Sheep to Sleep</h1>
+    <div id="counter">Sheep Jumped: 0</div>
+    <div class="scene">
+        <div class="sky"></div>
+        <div class="ground"></div>
+        <div class="fence">
+            <div class="fence-post"></div>
+            <div class="fence-post"></div>
+            <div class="fence-rail"></div>
+            <div class="fence-rail"></div>
+        </div>
+        <div class="sheep">
+            <div class="sheep-body">
+                <div class="sheep-wool"></div>
+            </div>
+            <div class="sheep-tail"></div>
+            <div class="sheep-head">
+                <div class="sheep-eye"></div>
+                <div class="sheep-nose"></div>
+            </div>
+            <div class="sheep-ear"></div>
+            <div class="sheep-leg front-left"></div>
+            <div class="sheep-leg front-right"></div>
+            <div class="sheep-leg back-left"></div>
+            <div class="sheep-leg back-right"></div>
+        </div>
+    </div>
 
- <script>
- let sheepCount = 0;
- const counter = document.getElementById('counter');
- const sheep = document.querySelector('.sheep');
- let isCounting = false;
+    <script>
+        let sheepCount = 0;
+        const counter = document.getElementById('counter');
+        const sheep = document.querySelector('.sheep');
+        let isCounting = false;
 
- function updateCounter() {
- if (!isCounting) {
- isCounting = true;
- sheepCount++;
- counter.textContent = `Sheep Jumped: ${sheepCount}`;
- setTimeout(() => {
- isCounting = false;
- }, 2100);
- }
- }
+        function updateCounter() {
+            if (!isCounting) {
+                isCounting = true;
+                sheepCount++;
+                counter.textContent = `Sheep Jumped: ${sheepCount}`;
+                setTimeout(() => {
+                    isCounting = false;
+                }, 2100);
+            }
+        }
 
- sheep.addEventListener('animationstart', () => {
- sheep.classList.add('animate');
- });
+        sheep.addEventListener('animationstart', () => {
+            sheep.classList.add('animate');
+        });
 
- sheep.addEventListener('animationiteration', updateCounter);
- </script>
+        sheep.addEventListener('animationiteration', updateCounter);
+    </script>
 </body>
 </html>
