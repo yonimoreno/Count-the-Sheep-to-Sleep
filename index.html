@@ -3,345 +3,613 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sheep Counter - Sleep Helper</title>
+    <title>Counting Sheep • Sweet Dreams</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: linear-gradient(to bottom, #0a0a3d, #2a2a5d); /* Richer night sky */
+        :root {
+            --midnight-blue: #0f1729;
+            --deep-navy: #1a2541;
+            --soft-lavender: #b4a7d6;
+            --pale-moon: #f5f3e8;
+            --warm-white: #fffef9;
+            --grass-dark: #2d4a3e;
+            --grass-light: #3d5a4e;
+            --wood-brown: #6b4423;
+            --wood-light: #8b5a2b;
+            --sheep-wool: #f8f6f0;
+            --sheep-face: #3a3a3a;
+        }
+
+        * {
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(to bottom, 
+                var(--midnight-blue) 0%, 
+                var(--deep-navy) 60%, 
+                #243152 100%);
             min-height: 100vh;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--warm-white);
         }
 
-        h1 {
-            color: #f0e68c;
-            margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-size: 2.5rem;
-            font-weight: bold;
+        /* Animated starfield */
+        .stars-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
 
-        #counter {
-            color: #f0e68c;
-            font-size: 24px;
-            margin: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .star.small {
+            width: 1px;
+            height: 1px;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star.large {
+            width: 3px;
+            height: 3px;
+            animation: twinkle 5s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Moon */
+        .moon {
+            position: fixed;
+            top: 80px;
+            right: 120px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 35% 35%, var(--pale-moon), #e8e5d0);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 40px rgba(245, 243, 232, 0.4),
+                0 0 80px rgba(245, 243, 232, 0.2),
+                inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+            animation: moonGlow 8s ease-in-out infinite;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            top: 25px;
+            left: 30px;
+        }
+
+        .moon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            bottom: 30px;
+            right: 25px;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(245, 243, 232, 0.4), 0 0 80px rgba(245, 243, 232, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(245, 243, 232, 0.6), 0 0 120px rgba(245, 243, 232, 0.3); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 600;
+            color: var(--warm-white);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--soft-lavender);
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* Counter */
+        .counter-container {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .counter-label {
+            font-size: 16px;
+            color: var(--soft-lavender);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif;
+            font-size: 96px;
+            font-weight: 400;
+            color: var(--warm-white);
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .counter.increment {
+            animation: counterPulse 0.5s ease;
+        }
+
+        @keyframes counterPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Scene */
+        .scene-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 500px;
+            padding: 0 40px;
         }
 
         .scene {
             position: relative;
-            width: 800px;
-            height: 400px;
-            overflow: hidden;
-            border: 8px solid #4a2c0f; /* Wooden frame effect */
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .sky {
-            position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, #0a0a3d, #2a2a5d);
         }
 
-        .sky::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="4" fill="#fff" opacity="0.9"/><circle cx="200" cy="100" r="2" fill="#fff" opacity="0.7"/><circle cx="300" cy="30" r="3" fill="#fff" opacity="0.8"/><circle cx="450" cy="150" r="2" fill="#fff" opacity="0.6"/><circle cx="600" cy="80" r="4" fill="#fff" opacity="0.9"/><circle cx="700" cy="120" r="2" fill="#fff" opacity="0.7"/></svg>');
-            background-size: 100% 100%;
-        }
-
+        /* Ground */
         .ground {
             position: absolute;
             bottom: 0;
-            width: 100%;
-            height: 80px;
-            background: linear-gradient(to bottom, #3cb371, #2e8b57);
-            border-top: 6px solid #1c5a3c; /* Grass edge */
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            left: 0;
+            right: 0;
+            height: 140px;
+            background: linear-gradient(to bottom, var(--grass-light), var(--grass-dark));
+            border-top: 3px solid rgba(255, 255, 255, 0.1);
         }
 
         .ground::before {
             content: '';
             position: absolute;
-            width: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 60 Q20 50 40 60 T80 60 T120 50 T160 60 T200 50 T240 60 T280 50 T320 60 T360 50 T400 60 T440 50 T480 60 T520 50 T560 60 T600 50 T640 60 T680 50 T720 60 T760 50 T800 60" fill="none" stroke="#1c5a3c" stroke-width="3"/></svg>');
-            background-size: 100% 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 3px,
+                rgba(0, 0, 0, 0.05) 3px,
+                rgba(0, 0, 0, 0.05) 6px
+            );
         }
 
+        /* Grass blades */
+        .grass {
+            position: absolute;
+            bottom: 140px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .grass-blade {
+            position: absolute;
+            bottom: 0;
+            width: 3px;
+            height: 30px;
+            background: linear-gradient(to top, var(--grass-dark), var(--grass-light));
+            border-radius: 50% 50% 0 0;
+            transform-origin: bottom center;
+            animation: grassSway 3s ease-in-out infinite;
+        }
+
+        @keyframes grassSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        /* Fence */
         .fence {
             position: absolute;
-            bottom: 80px;
+            bottom: 180px;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 80px;
+            width: 350px;
+            height: 140px;
+            z-index: 5;
         }
 
         .fence-post {
             position: absolute;
-            width: 12px;
-            height: 80px;
-            background: linear-gradient(to bottom, #8b4513, #5c2e0b);
-            border: 3px solid #3c1e07;
-            border-radius: 4px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            width: 16px;
+            height: 140px;
+            background: linear-gradient(to right, var(--wood-brown), var(--wood-light), var(--wood-brown));
+            border-radius: 3px 3px 0 0;
+            bottom: 0;
+            box-shadow: 
+                inset -2px 0 4px rgba(0, 0, 0, 0.3),
+                2px 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .fence-post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2px;
+            right: 2px;
+            height: 3px;
+            background: rgba(139, 90, 43, 0.8);
+            border-radius: 50%;
         }
 
         .fence-post:nth-child(1) { left: 0; }
-        .fence-post:nth-child(2) { right: 0; }
+        .fence-post:nth-child(2) { left: 83.5px; }
+        .fence-post:nth-child(3) { left: 167px; }
+        .fence-post:nth-child(4) { left: 250.5px; }
+        .fence-post:nth-child(5) { left: 334px; }
 
         .fence-rail {
             position: absolute;
-            width: 120px;
+            width: 100%;
             height: 12px;
-            background: linear-gradient(to bottom, #8b4513, #5c2e0b);
-            border: 3px solid #3c1e07;
-            border-radius: 4px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to bottom, var(--wood-light), var(--wood-brown));
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+                0 3px 8px rgba(0, 0, 0, 0.4);
         }
 
-        .fence-rail:nth-child(3) { top: 20px; }
-        .fence-rail:nth-child(4) { top: 50px; }
+        .fence-rail:nth-child(6) { top: 20px; }
+        .fence-rail:nth-child(7) { top: 60px; }
+        .fence-rail:nth-child(8) { top: 100px; }
 
+        /* Sheep */
         .sheep {
             position: absolute;
-            bottom: 80px;
-            left: -100px;
-            width: 90px;
-            height: 70px;
-            animation: jump 2s infinite;
+            width: 120px;
+            height: 100px;
+            bottom: 180px;
+            left: -150px;
+            z-index: 6;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
         }
 
-        .sheep-body {
-            position: absolute;
-            width: 90px;
-            height: 60px;
-            background: #f0f0f0;
-            border-radius: 50% 50% 40% 40%;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), inset -5px -5px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1;
+        .sheep.jumping {
+            animation: sheepJump 3.5s cubic-bezier(0.45, 0, 0.55, 1);
         }
 
-        .sheep-wool {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path d="M10 10 Q15 5 20 10 T30 10 T40 15 T50 10 T60 15 T70 10 T80 15 Z" fill="#f8f8f8" opacity="0.9"/><path d="M15 20 Q20 15 25 20 T35 20 T45 25 T55 20 T65 25 T75 20 Z" fill="#e8e8e8" opacity="0.85"/><path d="M20 30 Q25 25 30 30 T40 30 T50 35 T60 30 T70 35 Z" fill="#f0f0f0" opacity="0.9"/></svg>');
-            background-size: cover;
-        }
-
-        .sheep-head {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(to bottom, #2f2f4f, #1f1f3f); /* Darker gradient face */
-            border-radius: 50%;
-            right: -15px;
-            top: 5px;
-            z-index: 2;
-            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-            border: 2px solid #1a1a2f;
-        }
-
-        .sheep-eye {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            top: 8px;
-            right: 8px;
-            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .sheep-eye::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #000;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-        }
-
-        .sheep-eye::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            top: 1px;
-            left: 1px;
-        }
-
-        .sheep-nose {
-            position: absolute;
-            width: 6px;
-            height: 4px;
-            background: #ff9999;
-            border-radius: 50%;
-            top: 18px;
-            right: 12px;
-            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .sheep-ear {
-            position: absolute;
-            width: 15px;
-            height: 20px;
-            background: linear-gradient(to bottom, #2f2f4f, #1f1f3f);
-            border-radius: 50% 50% 20% 20%;
-            right: -20px;
-            top: 5px;
-            transform: rotate(40deg);
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            border: 2px solid #1a1a2f;
-            z-index: 1;
-        }
-
-        .sheep-ear::before {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 15px;
-            background: #ff9999;
-            border-radius: 50% 50% 20% 20%;
-            top: 2px;
-            left: 2px;
-        }
-
-        .sheep-leg {
-            position: absolute;
-            width: 12px;
-            height: 25px;
-            background: linear-gradient(to bottom, #2f2f4f, #1f1f3f);
-            border-radius: 0 0 5px 5px;
-            bottom: -5px;
-            z-index: 0;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            border: 2px solid #1a1a2f;
-        }
-
-        .sheep-leg::after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #000;
-            border-radius: 50%;
-            bottom: -5px;
-            left: 1px;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-        }
-
-        .sheep-leg.front-left { left: 15px; }
-        .sheep-leg.front-right { left: 30px; }
-        .sheep-leg.back-left { left: 45px; }
-        .sheep-leg.back-right { left: 60px; }
-
-        .sheep-tail {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #f0f0f0;
-            border-radius: 50% 20% 50% 20%;
-            left: -5px;
-            top: 35px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 0;
-        }
-
-        @keyframes jump {
+        @keyframes sheepJump {
             0% {
-                transform: translateX(0) translateY(0) rotate(0deg);
+                left: -150px;
+                bottom: 180px;
+                transform: rotate(0deg) scaleX(1);
             }
             20% {
-                transform: translateX(300px) translateY(-80px) rotate(5deg);
+                left: 25%;
+                bottom: 180px;
+                transform: rotate(0deg) scaleX(1);
             }
-            40% {
-                transform: translateX(400px) translateY(-140px) rotate(0deg);
+            35% {
+                left: 42%;
+                bottom: 420px;
+                transform: rotate(-20deg) scaleX(1);
             }
-            60% {
-                transform: translateX(500px) translateY(-80px) rotate(-5deg);
+            50% {
+                left: 58%;
+                bottom: 420px;
+                transform: rotate(-15deg) scaleX(1);
+            }
+            65% {
+                left: 75%;
+                bottom: 180px;
+                transform: rotate(0deg) scaleX(1);
             }
             100% {
-                transform: translateX(800px) translateY(0) rotate(0deg);
+                left: 130%;
+                bottom: 180px;
+                transform: rotate(0deg) scaleX(1);
             }
         }
 
-        @keyframes legMovement {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(40deg); }
-            40% { transform: rotate(-20deg); }
-            60% { transform: rotate(20deg); }
+        /* Controls */
+        .controls {
+            text-align: center;
+            padding: 60px 20px 80px;
+            position: relative;
+            z-index: 10;
         }
 
-        .sheep.animate .sheep-leg {
-            animation: legMovement 0.5s infinite;
+        .reset-btn {
+            font-family: 'Lora', serif;
+            padding: 16px 48px;
+            font-size: 16px;
+            background: rgba(180, 167, 214, 0.15);
+            border: 2px solid rgba(180, 167, 214, 0.4);
+            color: var(--warm-white);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .reset-btn:hover {
+            background: rgba(180, 167, 214, 0.25);
+            border-color: rgba(180, 167, 214, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .reset-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer message */
+        .message {
+            text-align: center;
+            padding: 20px;
+            font-size: 15px;
+            color: var(--soft-lavender);
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 40px;
+            }
+            .counter {
+                font-size: 72px;
+            }
+            .moon {
+                width: 80px;
+                height: 80px;
+                top: 50px;
+                right: 40px;
+            }
+            .fence {
+                width: 250px;
+            }
+            .fence-post:nth-child(1) { left: 0; }
+            .fence-post:nth-child(2) { left: 59px; }
+            .fence-post:nth-child(3) { left: 118px; }
+            .fence-post:nth-child(4) { left: 177px; }
+            .fence-post:nth-child(5) { left: 234px; }
+            .sheep {
+                width: 90px;
+                height: 75px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Count the Sheep to Sleep</h1>
-    <div id="counter">Sheep Jumped: 0</div>
-    <div class="scene">
-        <div class="sky"></div>
-        <div class="ground"></div>
-        <div class="fence">
-            <div class="fence-post"></div>
-            <div class="fence-post"></div>
-            <div class="fence-rail"></div>
-            <div class="fence-rail"></div>
-        </div>
-        <div class="sheep">
-            <div class="sheep-body">
-                <div class="sheep-wool"></div>
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="moon"></div>
+    
+    <div class="header">
+        <h1 class="title">Counting Sheep</h1>
+        <p class="subtitle">Drift into dreams</p>
+    </div>
+    
+    <div class="counter-container">
+        <div class="counter-label">Sheep Counted</div>
+        <div class="counter" id="counter">0</div>
+    </div>
+    
+    <div class="scene-container">
+        <div class="scene" id="scene">
+            <div class="grass" id="grass"></div>
+            
+            <div class="fence">
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-rail"></div>
+                <div class="fence-rail"></div>
+                <div class="fence-rail"></div>
             </div>
-            <div class="sheep-tail"></div>
-            <div class="sheep-head">
-                <div class="sheep-eye"></div>
-                <div class="sheep-nose"></div>
-            </div>
-            <div class="sheep-ear"></div>
-            <div class="sheep-leg front-left"></div>
-            <div class="sheep-leg front-right"></div>
-            <div class="sheep-leg back-left"></div>
-            <div class="sheep-leg back-right"></div>
+            
+            <div class="ground"></div>
         </div>
+    </div>
+    
+    <div class="controls">
+        <button class="reset-btn" onclick="resetCounter()">Reset Counter</button>
+    </div>
+    
+    <div class="message">
+        Close your eyes and let sleep find you...
     </div>
 
     <script>
-        let sheepCount = 0;
-        const counter = document.getElementById('counter');
-        const sheep = document.querySelector('.sheep');
-        let isCounting = false;
-
-        function updateCounter() {
-            if (!isCounting) {
-                isCounting = true;
-                sheepCount++;
-                counter.textContent = `Sheep Jumped: ${sheepCount}`;
-                setTimeout(() => {
-                    isCounting = false;
-                }, 2100);
+        let count = 0;
+        const counterElement = document.getElementById('counter');
+        const scene = document.getElementById('scene');
+        
+        // Create stars
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const sizes = ['small', 'small', 'small', 'medium', 'medium', 'large'];
+            
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${sizes[Math.floor(Math.random() * sizes.length)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
             }
         }
-
-        sheep.addEventListener('animationstart', () => {
-            sheep.classList.add('animate');
-        });
-
-        sheep.addEventListener('animationiteration', updateCounter);
+        
+        // Create grass blades
+        function createGrass() {
+            const grassContainer = document.getElementById('grass');
+            for (let i = 0; i < 80; i++) {
+                const blade = document.createElement('div');
+                blade.className = 'grass-blade';
+                blade.style.left = (i * 1.5) + '%';
+                blade.style.height = (Math.random() * 15 + 20) + 'px';
+                blade.style.animationDelay = (Math.random() * 3) + 's';
+                blade.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                grassContainer.appendChild(blade);
+            }
+        }
+        
+        // Create detailed sheep SVG
+        function createSheep() {
+            const sheep = document.createElement('div');
+            sheep.className = 'sheep jumping';
+            
+            sheep.innerHTML = `
+                <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);">
+                    <!-- Shadow -->
+                    <ellipse cx="60" cy="95" rx="35" ry="8" fill="rgba(0,0,0,0.2)" />
+                    
+                    <!-- Legs -->
+                    <rect x="35" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
+                    <rect x="50" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
+                    <rect x="65" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
+                    <rect x="80" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
+                    
+                    <!-- Hooves -->
+                    <ellipse cx="39" cy="91" rx="5" ry="4" fill="#2d2d2d" />
+                    <ellipse cx="54" cy="91" rx="5" ry="4" fill="#2d2d2d" />
+                    <ellipse cx="69" cy="91" rx="5" ry="4" fill="#2d2d2d" />
+                    <ellipse cx="84" cy="91" rx="5" ry="4" fill="#2d2d2d" />
+                    
+                    <!-- Body - fluffy wool -->
+                    <ellipse cx="60" cy="48" rx="38" ry="28" fill="#f8f6f0" />
+                    
+                    <!-- Wool texture circles -->
+                    <circle cx="45" cy="40" r="12" fill="#ffffff" opacity="0.6" />
+                    <circle cx="65" cy="38" r="14" fill="#ffffff" opacity="0.5" />
+                    <circle cx="75" cy="50" r="11" fill="#ffffff" opacity="0.6" />
+                    <circle cx="50" cy="55" r="10" fill="#ffffff" opacity="0.5" />
+                    <circle cx="70" cy="58" r="9" fill="#ffffff" opacity="0.6" />
+                    
+                    <!-- More wool details -->
+                    <circle cx="38" cy="50" r="10" fill="#f0ede5" opacity="0.8" />
+                    <circle cx="82" cy="48" r="10" fill="#f0ede5" opacity="0.8" />
+                    <circle cx="60" cy="60" r="8" fill="#f0ede5" opacity="0.7" />
+                    
+                    <!-- Head -->
+                    <ellipse cx="25" cy="42" rx="16" ry="18" fill="#3a3a3a" />
+                    
+                    <!-- Ears -->
+                    <ellipse cx="18" cy="32" rx="6" ry="11" fill="#3a3a3a" transform="rotate(-20 18 32)" />
+                    <ellipse cx="32" cy="32" rx="6" ry="11" fill="#3a3a3a" transform="rotate(20 32 32)" />
+                    
+                    <!-- Inner ears -->
+                    <ellipse cx="18" cy="34" rx="3" ry="6" fill="#4a4a4a" transform="rotate(-20 18 34)" />
+                    <ellipse cx="32" cy="34" rx="3" ry="6" fill="#4a4a4a" transform="rotate(20 32 34)" />
+                    
+                    <!-- Snout -->
+                    <ellipse cx="25" cy="50" rx="10" ry="8" fill="#2d2d2d" />
+                    
+                    <!-- Nostrils -->
+                    <ellipse cx="22" cy="52" rx="2" ry="2.5" fill="#1a1a1a" />
+                    <ellipse cx="28" cy="52" rx="2" ry="2.5" fill="#1a1a1a" />
+                    
+                    <!-- Eyes -->
+                    <ellipse cx="20" cy="40" rx="3.5" ry="4" fill="#2d2d2d" />
+                    <ellipse cx="30" cy="40" rx="3.5" ry="4" fill="#2d2d2d" />
+                    <circle cx="21" cy="40" r="2" fill="white" />
+                    <circle cx="31" cy="40" r="2" fill="white" />
+                    <circle cx="21.5" cy="40" r="1.2" fill="#1a1a1a" />
+                    <circle cx="31.5" cy="40" r="1.2" fill="#1a1a1a" />
+                    
+                    <!-- Eyebrows for expression -->
+                    <path d="M 17 36 Q 20 35 23 36" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                    <path d="M 27 36 Q 30 35 33 36" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                    
+                    <!-- Tail -->
+                    <circle cx="95" cy="52" r="8" fill="#f8f6f0" />
+                    <circle cx="92" cy="54" r="6" fill="#ffffff" opacity="0.6" />
+                </svg>
+            `;
+            
+            scene.appendChild(sheep);
+            
+            // Update counter with animation
+            count++;
+            counterElement.textContent = count;
+            counterElement.classList.add('increment');
+            setTimeout(() => counterElement.classList.remove('increment'), 500);
+            
+            // Remove sheep after animation
+            setTimeout(() => {
+                sheep.remove();
+            }, 3500);
+        }
+        
+        // Reset counter
+        function resetCounter() {
+            count = 0;
+            counterElement.textContent = count;
+            counterElement.classList.add('increment');
+            setTimeout(() => counterElement.classList.remove('increment'), 500);
+        }
+        
+        // Initialize
+        createStars();
+        createGrass();
+        
+        // Start sheep animation
+        setTimeout(() => {
+            createSheep();
+            setInterval(createSheep, 3500);
+        }, 500);
     </script>
 </body>
 </html>
