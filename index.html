@@ -318,7 +318,10 @@
             bottom: 180px;
             left: -150px;
             z-index: 6;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+        }
+
+        .sheep svg {
+            display: block;
         }
 
         .sheep.jumping {
@@ -364,6 +367,73 @@
             padding: 60px 20px 80px;
             position: relative;
             z-index: 10;
+        }
+
+        .support-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(180, 167, 214, 0.08);
+            border: 1px solid rgba(180, 167, 214, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.4s ease;
+        }
+
+        .support-section:hover {
+            background: rgba(180, 167, 214, 0.12);
+            border-color: rgba(180, 167, 214, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .support-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--warm-white);
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .support-text {
+            font-size: 15px;
+            color: var(--soft-lavender);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .coffee-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Lora', serif;
+            padding: 14px 36px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #FFDD00 0%, #FDB915 100%);
+            border: none;
+            color: #000000;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(255, 221, 0, 0.3);
+        }
+
+        .coffee-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(255, 221, 0, 0.5);
+            background: linear-gradient(135deg, #FFE54C 0%, #FFDD00 100%);
+        }
+
+        .coffee-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .coffee-icon {
+            font-size: 20px;
         }
 
         .reset-btn {
@@ -465,6 +535,15 @@
     </div>
     
     <div class="controls">
+        <div class="support-section">
+            <h3 class="support-title">Enjoying the Sheep?</h3>
+            <p class="support-text">Help keep this project alive and support the development of new calming features</p>
+            <a href="https://buymeacoffee.com/yonimoreno" target="_blank" class="coffee-btn">
+                <span class="coffee-icon">☕</span>
+                <span>Buy me a coffee</span>
+            </a>
+        </div>
+        
         <button class="reset-btn" onclick="resetCounter()">Reset Counter</button>
     </div>
     
@@ -516,70 +595,195 @@
             sheep.className = 'sheep jumping';
             
             sheep.innerHTML = `
-                <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);">
-                    <!-- Shadow -->
-                    <ellipse cx="60" cy="95" rx="35" ry="8" fill="rgba(0,0,0,0.2)" />
+                <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);" preserveAspectRatio="xMidYMid meet">
+                    <!-- Force transparent background for Safari -->
+                    <rect x="0" y="0" width="120" height="100" fill="transparent" fill-opacity="0" />
+                    <defs>
+                        <!-- Wool gradient for depth with more stops -->
+                        <radialGradient id="woolGradient" cx="40%" cy="30%">
+                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#faf8f3;stop-opacity:1" />
+                            <stop offset="70%" style="stop-color:#f0ede5;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ddd9cc;stop-opacity:1" />
+                        </radialGradient>
+                        
+                        <!-- Face gradient with better depth -->
+                        <radialGradient id="faceGradient" cx="35%" cy="30%">
+                            <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#353535;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                        </radialGradient>
+                        
+                        <!-- Leg gradient for cylindrical form -->
+                        <linearGradient id="legGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                            <stop offset="30%" style="stop-color:#2d2d2d;stop-opacity:1" />
+                            <stop offset="70%" style="stop-color:#3a3a3a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                        </linearGradient>
+                        
+                        <!-- Shadow gradient -->
+                        <radialGradient id="shadowGradient" cx="50%" cy="50%">
+                            <stop offset="0%" style="stop-color:rgba(0,0,0,0.35);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(0,0,0,0);stop-opacity:0" />
+                        </radialGradient>
+                        
+                        <!-- Wool texture filter - subtle noise -->
+                        <filter id="woolTexture">
+                            <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" seed="5" />
+                            <feColorMatrix type="saturate" values="0"/>
+                            <feComponentTransfer>
+                                <feFuncA type="discrete" tableValues="0 0 0.3 0.6 1"/>
+                            </feComponentTransfer>
+                            <feGaussianBlur stdDeviation="0.4"/>
+                        </filter>
+                    </defs>
                     
-                    <!-- Legs -->
-                    <rect x="35" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
-                    <rect x="50" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
-                    <rect x="65" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
-                    <rect x="80" y="65" width="8" height="28" rx="4" fill="#3a3a3a" />
+                    <!-- Ground shadow -->
+                    <ellipse cx="60" cy="96" rx="42" ry="8" fill="url(#shadowGradient)" />
                     
-                    <!-- Hooves -->
-                    <ellipse cx="39" cy="91" rx="5" ry="4" fill="#2d2d2d" />
-                    <ellipse cx="54" cy="91" rx="5" ry="4" fill="#2d2d2d" />
-                    <ellipse cx="69" cy="91" rx="5" ry="4" fill="#2d2d2d" />
-                    <ellipse cx="84" cy="91" rx="5" ry="4" fill="#2d2d2d" />
+                    <!-- Back legs (with proper depth) -->
+                    <g opacity="0.80">
+                        <!-- Back right leg -->
+                        <ellipse cx="78" cy="70" rx="5" ry="8" fill="url(#legGradient)" />
+                        <rect x="75" y="70" width="6" height="22" rx="3" fill="url(#legGradient)" />
+                        <ellipse cx="78" cy="92" rx="6" ry="4" fill="#0d0d0d" />
+                        <ellipse cx="78" cy="91" rx="4.5" ry="2.5" fill="#1a1a1a" />
+                        
+                        <!-- Back left leg -->
+                        <ellipse cx="64" cy="70" rx="5" ry="8" fill="url(#legGradient)" />
+                        <rect x="61" y="70" width="6" height="22" rx="3" fill="url(#legGradient)" />
+                        <ellipse cx="64" cy="92" rx="6" ry="4" fill="#0d0d0d" />
+                        <ellipse cx="64" cy="91" rx="4.5" ry="2.5" fill="#1a1a1a" />
+                    </g>
                     
-                    <!-- Body - fluffy wool -->
-                    <ellipse cx="60" cy="48" rx="38" ry="28" fill="#f8f6f0" />
+                    <!-- Main body - organic ellipse with better proportions -->
+                    <ellipse cx="60" cy="52" rx="40" ry="28" fill="url(#woolGradient)" />
                     
-                    <!-- Wool texture circles -->
-                    <circle cx="45" cy="40" r="12" fill="#ffffff" opacity="0.6" />
-                    <circle cx="65" cy="38" r="14" fill="#ffffff" opacity="0.5" />
-                    <circle cx="75" cy="50" r="11" fill="#ffffff" opacity="0.6" />
-                    <circle cx="50" cy="55" r="10" fill="#ffffff" opacity="0.5" />
-                    <circle cx="70" cy="58" r="9" fill="#ffffff" opacity="0.6" />
+                    <!-- Wool texture overlay -->
+                    <ellipse cx="60" cy="52" rx="40" ry="28" fill="white" opacity="0.12" filter="url(#woolTexture)" />
                     
-                    <!-- More wool details -->
-                    <circle cx="38" cy="50" r="10" fill="#f0ede5" opacity="0.8" />
-                    <circle cx="82" cy="48" r="10" fill="#f0ede5" opacity="0.8" />
-                    <circle cx="60" cy="60" r="8" fill="#f0ede5" opacity="0.7" />
+                    <!-- Multiple wool layers for realistic fluffy texture -->
+                    <!-- Top layer wool -->
+                    <circle cx="42" cy="40" r="13" fill="#ffffff" opacity="0.75" />
+                    <circle cx="52" cy="36" r="12" fill="#fafafa" opacity="0.70" />
+                    <circle cx="64" cy="38" r="14" fill="#ffffff" opacity="0.72" />
+                    <circle cx="76" cy="42" r="12" fill="#f8f8f8" opacity="0.68" />
+                    <circle cx="84" cy="48" r="11" fill="#ffffff" opacity="0.70" />
                     
-                    <!-- Head -->
-                    <ellipse cx="25" cy="42" rx="16" ry="18" fill="#3a3a3a" />
+                    <!-- Middle layer wool -->
+                    <circle cx="38" cy="48" r="11" fill="#f5f3ed" opacity="0.65" />
+                    <circle cx="48" cy="44" r="10" fill="#fafafa" opacity="0.60" />
+                    <circle cx="58" cy="42" r="11" fill="#f8f6f0" opacity="0.62" />
+                    <circle cx="70" cy="44" r="12" fill="#f5f5f5" opacity="0.64" />
+                    <circle cx="82" cy="50" r="10" fill="#f0ede5" opacity="0.60" />
+                    <circle cx="88" cy="54" r="10" fill="#f5f3ed" opacity="0.58" />
                     
-                    <!-- Ears -->
-                    <ellipse cx="18" cy="32" rx="6" ry="11" fill="#3a3a3a" transform="rotate(-20 18 32)" />
-                    <ellipse cx="32" cy="32" rx="6" ry="11" fill="#3a3a3a" transform="rotate(20 32 32)" />
+                    <!-- Bottom layer wool -->
+                    <circle cx="44" cy="58" r="11" fill="#f0ede5" opacity="0.55" />
+                    <circle cx="56" cy="60" r="10" fill="#f8f6f0" opacity="0.52" />
+                    <circle cx="68" cy="58" r="11" fill="#f5f3ed" opacity="0.54" />
+                    <circle cx="78" cy="56" r="9" fill="#f0ede5" opacity="0.50" />
                     
-                    <!-- Inner ears -->
-                    <ellipse cx="18" cy="34" rx="3" ry="6" fill="#4a4a4a" transform="rotate(-20 18 34)" />
-                    <ellipse cx="32" cy="34" rx="3" ry="6" fill="#4a4a4a" transform="rotate(20 32 34)" />
+                    <!-- Bottom shading on body -->
+                    <ellipse cx="60" cy="68" rx="36" ry="10" fill="#c8c4b5" opacity="0.25" />
                     
-                    <!-- Snout -->
-                    <ellipse cx="25" cy="50" rx="10" ry="8" fill="#2d2d2d" />
+                    <!-- Neck/chest connection with wool -->
+                    <ellipse cx="30" cy="50" rx="14" ry="17" fill="url(#woolGradient)" />
+                    <circle cx="30" cy="44" r="9" fill="#ffffff" opacity="0.60" />
+                    <circle cx="26" cy="52" r="8" fill="#f8f6f0" opacity="0.55" />
+                    <circle cx="34" cy="48" r="7" fill="#fafafa" opacity="0.58" />
                     
-                    <!-- Nostrils -->
-                    <ellipse cx="22" cy="52" rx="2" ry="2.5" fill="#1a1a1a" />
-                    <ellipse cx="28" cy="52" rx="2" ry="2.5" fill="#1a1a1a" />
+                    <!-- Head with realistic gradient -->
+                    <ellipse cx="20" cy="46" rx="15" ry="17" fill="url(#faceGradient)" />
                     
-                    <!-- Eyes -->
-                    <ellipse cx="20" cy="40" rx="3.5" ry="4" fill="#2d2d2d" />
-                    <ellipse cx="30" cy="40" rx="3.5" ry="4" fill="#2d2d2d" />
-                    <circle cx="21" cy="40" r="2" fill="white" />
-                    <circle cx="31" cy="40" r="2" fill="white" />
-                    <circle cx="21.5" cy="40" r="1.2" fill="#1a1a1a" />
-                    <circle cx="31.5" cy="40" r="1.2" fill="#1a1a1a" />
+                    <!-- Ears with inner detail and depth -->
+                    <g>
+                        <ellipse cx="14" cy="34" rx="6" ry="11" fill="#2d2d2d" transform="rotate(-28 14 34)" />
+                        <ellipse cx="15" cy="36" rx="3.5" ry="7" fill="#404040" transform="rotate(-28 15 36)" />
+                        <ellipse cx="15.5" cy="38" rx="2" ry="4" fill="#4a4a4a" transform="rotate(-28 15.5 38)" />
+                    </g>
+                    <g>
+                        <ellipse cx="26" cy="34" rx="6" ry="11" fill="#2d2d2d" transform="rotate(28 26 34)" />
+                        <ellipse cx="25" cy="36" rx="3.5" ry="7" fill="#404040" transform="rotate(28 25 36)" />
+                        <ellipse cx="24.5" cy="38" rx="2" ry="4" fill="#4a4a4a" transform="rotate(28 24.5 38)" />
+                    </g>
                     
-                    <!-- Eyebrows for expression -->
-                    <path d="M 17 36 Q 20 35 23 36" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round" />
-                    <path d="M 27 36 Q 30 35 33 36" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                    <!-- Snout with proper volume and nostril detail -->
+                    <ellipse cx="20" cy="54" rx="10" ry="8" fill="#1a1a1a" />
+                    <ellipse cx="20" cy="53" rx="8.5" ry="6.5" fill="#252525" />
+                    <ellipse cx="20.5" cy="53" rx="7" ry="5.5" fill="#2d2d2d" />
                     
-                    <!-- Tail -->
-                    <circle cx="95" cy="52" r="8" fill="#f8f6f0" />
-                    <circle cx="92" cy="54" r="6" fill="#ffffff" opacity="0.6" />
+                    <!-- Nostrils with depth -->
+                    <ellipse cx="17.5" cy="55" rx="2.2" ry="2.8" fill="#000000" />
+                    <ellipse cx="17.5" cy="54" rx="1.3" ry="1.5" fill="#0d0d0d" />
+                    <ellipse cx="22.5" cy="55" rx="2.2" ry="2.8" fill="#000000" />
+                    <ellipse cx="22.5" cy="54" rx="1.3" ry="1.5" fill="#0d0d0d" />
+                    
+                    <!-- Mouth hint -->
+                    <path d="M 20 57 Q 20 58 20 59" stroke="#0d0d0d" stroke-width="0.8" fill="none" stroke-linecap="round" />
+                    
+                    <!-- Eyes with complete realistic detail -->
+                    <g>
+                        <!-- Eye sockets -->
+                        <ellipse cx="16" cy="44" rx="5" ry="5.5" fill="#252525" />
+                        <ellipse cx="24" cy="44" rx="5" ry="5.5" fill="#252525" />
+                        
+                        <!-- Eyeballs -->
+                        <ellipse cx="16" cy="44" rx="4.2" ry="4.8" fill="#1a1a1a" />
+                        <ellipse cx="24" cy="44" rx="4.2" ry="4.8" fill="#1a1a1a" />
+                        
+                        <!-- Whites of eyes -->
+                        <ellipse cx="16.5" cy="43.5" rx="2.8" ry="3.2" fill="#ffffff" />
+                        <ellipse cx="24.5" cy="43.5" rx="2.8" ry="3.2" fill="#ffffff" />
+                        
+                        <!-- Iris hint -->
+                        <ellipse cx="16.8" cy="44" rx="2.2" ry="2.5" fill="#3d3025" opacity="0.4" />
+                        <ellipse cx="24.8" cy="44" rx="2.2" ry="2.5" fill="#3d3025" opacity="0.4" />
+                        
+                        <!-- Pupils -->
+                        <ellipse cx="17" cy="44.5" rx="1.6" ry="2" fill="#000000" />
+                        <ellipse cx="25" cy="44.5" rx="1.6" ry="2" fill="#000000" />
+                        
+                        <!-- Highlight reflections -->
+                        <circle cx="17.5" cy="43" r="0.9" fill="#ffffff" opacity="0.95" />
+                        <circle cx="25.5" cy="43" r="0.9" fill="#ffffff" opacity="0.95" />
+                        <ellipse cx="16.5" cy="45.5" rx="0.5" ry="0.6" fill="#ffffff" opacity="0.5" />
+                        <ellipse cx="24.5" cy="45.5" rx="0.5" ry="0.6" fill="#ffffff" opacity="0.5" />
+                    </g>
+                    
+                    <!-- Subtle brow ridge and expression -->
+                    <path d="M 12 41 Q 16 40 20 41" stroke="#0d0d0d" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5" />
+                    <path d="M 20 41 Q 24 40 28 41" stroke="#0d0d0d" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5" />
+                    
+                    <!-- Front legs (with proper depth and highlight) -->
+                    <g>
+                        <!-- Front right leg -->
+                        <ellipse cx="45" cy="70" rx="5" ry="8" fill="url(#legGradient)" />
+                        <rect x="42" y="70" width="6" height="22" rx="3" fill="url(#legGradient)" />
+                        <rect x="43" y="70" width="2.5" height="21" rx="1.2" fill="#404040" opacity="0.5" />
+                        <ellipse cx="45" cy="92" rx="6.5" ry="4.5" fill="#0d0d0d" />
+                        <ellipse cx="45" cy="91" rx="5" ry="2.8" fill="#1a1a1a" />
+                        <ellipse cx="45" cy="90.5" rx="3" ry="1.5" fill="#252525" />
+                    </g>
+                    <g>
+                        <!-- Front left leg -->
+                        <ellipse cx="31" cy="70" rx="5" ry="8" fill="url(#legGradient)" />
+                        <rect x="28" y="70" width="6" height="22" rx="3" fill="url(#legGradient)" />
+                        <rect x="29" y="70" width="2.5" height="21" rx="1.2" fill="#404040" opacity="0.5" />
+                        <ellipse cx="31" cy="92" rx="6.5" ry="4.5" fill="#0d0d0d" />
+                        <ellipse cx="31" cy="91" rx="5" ry="2.8" fill="#1a1a1a" />
+                        <ellipse cx="31" cy="90.5" rx="3" ry="1.5" fill="#252525" />
+                    </g>
+                    
+                    <!-- Fluffy tail with curl -->
+                    <g transform="translate(96, 54)">
+                        <ellipse cx="0" cy="0" rx="9" ry="11" fill="url(#woolGradient)" />
+                        <circle cx="-2" cy="-3" r="6" fill="#ffffff" opacity="0.70" />
+                        <circle cx="1" cy="-1" r="5" fill="#fafafa" opacity="0.60" />
+                        <circle cx="0" cy="2" r="5" fill="#f5f3ed" opacity="0.55" />
+                        <circle cx="-2" cy="3" r="4" fill="#f0ede5" opacity="0.50" />
+                    </g>
                 </svg>
             `;
             
