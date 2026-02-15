@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://sheepcount.rest/</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+```
+
+**robots.txt:**
+```
+User-agent: *
+Allow: /
+
+Sitemap: https://sheepcount.rest/sitemap.xml
+```
+
+### 3. **Set Up Google Search Console**
+- Go to https://search.google.com/search-console
+- Add property: sheepcount.rest
+- Verify ownership (via DNS or HTML file)
+- Submit your sitemap
+
+---
+
+## 🚀 Ready to Launch? Here's Your Week 1 Plan
+
+### **Day 1 (Today!):**
+- [x] Domain working ✅
+- [ ] Enable HTTPS when available
+- [ ] Create social media preview image (screenshot + text in Canva)
+- [ ] Set up Google Analytics (optional but recommended)
+
+### **Day 2-3:**
+Post on Reddit:
+1. **r/SideProject** - "I built a counting sheep website for insomnia"
+2. **r/insomnia** - "Made a free tool that helps me fall asleep"
+3. **r/somethingimade** - Share your creation
+
+### **Day 4:**
+- Post on Twitter/X with hashtags: #insomnia #sleep #buildinpublic
+- Share on your personal social media
+
+### **Day 5:**
+- Submit to Product Hunt (Tuesday-Thursday are best days)
+- This can bring 1,000-10,000 visitors!
+
+---
+
+## 📱 Social Media Post Templates
+
+**Reddit Post Title:**
+"I built sheepcount.rest - a free website to help you fall asleep 🐑"
+
+**Reddit Post Body:**
+```
+Hey everyone! I struggled with insomnia and decided to build something to help.
+
+sheepcount.rest is a simple, beautiful website where you watch sheep jump over a fence. No ads, no signup, completely free.
+
+Features:
+- Peaceful animated sheep
+- Starry night sky
+- Sleep counter
+- Works on mobile
+
+I'd love to hear if this helps anyone! The domain name itself is a reminder to rest 😊
+
+[sheepcount.rest](https://sheepcount.rest)
+```
+
+**Twitter/X Post:**
+```
+Can't sleep? 🐑
+
+I built sheepcount.rest - watch peaceful sheep jump over a fence until you drift off.
+
+✨ No ads
+✨ No signup  
+✨ Just sheep
+
+Try it tonight: https://sheepcount.rest
+
+#insomnia #sleep #webapp
