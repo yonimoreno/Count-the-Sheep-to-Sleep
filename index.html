@@ -11,24 +11,33 @@
     <meta name="keywords" content="counting sheep, sleep aid, insomnia help, fall asleep fast, sleep tool, counting sheep online, free sleep aid, relaxation, meditation, sleep app">
     <meta name="author" content="Yoni Moreno">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://yourusername.github.io/counting-sheep/">
+    <link rel="canonical" href="https://sheepcount.rest/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/counting-sheep/">
+    <meta property="og:url" content="https://sheepcount.rest/">
     <meta property="og:title" content="Counting Sheep - Free Sleep Aid Tool | Fall Asleep Fast">
     <meta property="og:description" content="Can't sleep? Watch peaceful sheep jump over a fence. Free, calming, and effective sleep aid.">
-    <meta property="og:image" content="https://yourusername.github.io/counting-sheep/preview.png">
+    <meta property="og:image" content="https://sheepcount.rest/preview.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yourusername.github.io/counting-sheep/">
+    <meta property="twitter:url" content="https://sheepcount.rest/">
     <meta property="twitter:title" content="Counting Sheep - Free Sleep Aid Tool | Fall Asleep Fast">
     <meta property="twitter:description" content="Can't sleep? Watch peaceful sheep jump over a fence. Free, calming, and effective sleep aid.">
-    <meta property="twitter:image" content="https://yourusername.github.io/counting-sheep/preview.png">
+    <meta property="twitter:image" content="https://sheepcount.rest/preview.png">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐑</text></svg>">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2H3XGDC1V"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S2H3XGDC1V');
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -498,6 +507,60 @@
             letter-spacing: 1px;
         }
 
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 37, 65, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border-top: 1px solid rgba(180, 167, 214, 0.3);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            flex-wrap: wrap;
+        }
+
+        .cookie-banner.show {
+            transform: translateY(0);
+        }
+
+        .cookie-text {
+            color: var(--warm-white);
+            font-size: 14px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: var(--soft-lavender);
+            text-decoration: underline;
+        }
+
+        .cookie-accept {
+            padding: 10px 30px;
+            background: rgba(180, 167, 214, 0.2);
+            border: 1px solid rgba(180, 167, 214, 0.4);
+            color: var(--warm-white);
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cookie-accept:hover {
+            background: rgba(180, 167, 214, 0.3);
+            border-color: rgba(180, 167, 214, 0.6);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .title {
@@ -581,6 +644,14 @@
         © Copyright 2026 Yoni Moreno.
     </div>
 
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-text">
+            🍪 This website uses cookies to analyze traffic with Google Analytics. By continuing, you accept our use of cookies.
+        </div>
+        <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
+    </div>
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
     {
@@ -588,7 +659,7 @@
       "@type": "WebApplication",
       "name": "Counting Sheep",
       "description": "Free online sleep aid tool that helps you fall asleep by watching peaceful sheep jump over a fence",
-      "url": "https://yourusername.github.io/counting-sheep/",
+      "url": "https://sheepcount.rest/",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -871,6 +942,21 @@
             createSheep();
             setInterval(createSheep, 3500);
         }, 500);
+        
+        // Cookie Consent
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+        
+        // Show cookie banner if not accepted
+        window.addEventListener('load', () => {
+            if (!localStorage.getItem('cookieConsent')) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        });
     </script>
 </body>
 </html>
