@@ -724,12 +724,26 @@
             const sheep = document.createElement('div');
             sheep.className = 'sheep jumping';
             
-            // Use custom PNG image - adorable jumping sheep!
-            sheep.innerHTML = `
-                <img src="sheep_static.png" alt="Counting Sheep" style="width: 100%; height: 100%; object-fit: contain;">
-            `;
+            // Create img element
+            const img = document.createElement('img');
+            img.src = 'sheep_static.png';
+            img.alt = 'Counting Sheep';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
             
+            sheep.appendChild(img);
             scene.appendChild(sheep);
+            
+            // Switch to jumping image when sheep is in the air
+            setTimeout(() => {
+                img.src = 'sheep_jumping.png';
+            }, 1000); // Start of jump
+            
+            // Switch back to static when landing
+            setTimeout(() => {
+                img.src = 'sheep_static.png';
+            }, 2000); // After landing
             
             // Update counter with animation
             count++;
