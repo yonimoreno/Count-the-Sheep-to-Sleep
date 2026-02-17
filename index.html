@@ -723,28 +723,22 @@
         function createSheep() {
             const sheep = document.createElement('div');
             sheep.className = 'sheep jumping';
-            
-            // Create img element
+
             const img = document.createElement('img');
             img.src = 'sheep_static.png';
             img.alt = 'Counting Sheep';
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'contain';
-            
+            img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
             sheep.appendChild(img);
             scene.appendChild(sheep);
-            
-            // Switch to jumping image when sheep is in the air
-            setTimeout(() => {
-                img.src = 'sheep_jumping.png';
-            }, 1000); // Start of jump
-            
-            // Switch back to static when landing
-            setTimeout(() => {
-                img.src = 'sheep_static.png';
-            }, 2000); // After landing
-            
+
+            // Animation is 3s total
+            // Jump starts at 15% = 0.45s, peaks at 35%-50% = 1.05s-1.5s, lands at 65% = 1.95s
+            const jumpStart = 3000 * 0.15;   // 450ms  - swap to jumping
+            const jumpLand  = 3000 * 0.65;   // 1950ms - swap back to static
+
+            setTimeout(() => { img.src = 'sheep_jumping.png'; }, jumpStart);
+            setTimeout(() => { img.src = 'sheep_static.png';  }, jumpLand);
+
             // Update counter with animation
             count++;
             counterElement.textContent = count;
@@ -765,6 +759,10 @@
             setTimeout(() => counterElement.classList.remove('increment'), 500);
         }
         
+        // Preload both sheep images for instant swap
+        const imgStatic  = new Image(); imgStatic.src  = 'sheep_static.png';
+        const imgJumping = new Image(); imgJumping.src = 'sheep_jumping.png';
+
         // Initialize
         createStars();
         createGrass();
