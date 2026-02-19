@@ -513,6 +513,57 @@
             letter-spacing: 1px;
         }
 
+        /* Language Selector */
+        .language-selector {
+            text-align: center;
+            padding: 30px 20px 20px;
+            font-size: 13px;
+            color: var(--soft-lavender);
+            opacity: 0.8;
+        }
+
+        .language-label {
+            margin-bottom: 10px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .language-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            background: rgba(180, 167, 214, 0.1);
+            border: 1px solid rgba(180, 167, 214, 0.2);
+            color: var(--soft-lavender);
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .lang-btn:hover {
+            background: rgba(180, 167, 214, 0.2);
+            border-color: rgba(180, 167, 214, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .lang-btn.active {
+            background: rgba(180, 167, 214, 0.3);
+            border-color: rgba(180, 167, 214, 0.5);
+            color: var(--warm-white);
+        }
+
         /* Cookie Consent Banner */
         .cookie-banner {
             position: fixed;
@@ -645,6 +696,24 @@
     <div class="message">
         Close your eyes and let sleep find you...
     </div>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <div class="language-label">🌍 Language / Idioma / Langue / Sprache / Мова</div>
+        <div class="language-buttons" id="languageButtons">
+            <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">English</button>
+            <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">Español</button>
+            <button class="lang-btn" onclick="changeLanguage('fr')" data-lang="fr">Français</button>
+            <button class="lang-btn" onclick="changeLanguage('de')" data-lang="de">Deutsch</button>
+            <button class="lang-btn" onclick="changeLanguage('pl')" data-lang="pl">Polski</button>
+            <button class="lang-btn" onclick="changeLanguage('uk')" data-lang="uk">Українська</button>
+            <button class="lang-btn" onclick="changeLanguage('it')" data-lang="it">Italiano</button>
+            <button class="lang-btn" onclick="changeLanguage('pt')" data-lang="pt">Português</button>
+            <button class="lang-btn" onclick="changeLanguage('ru')" data-lang="ru">Русский</button>
+            <button class="lang-btn" onclick="changeLanguage('ja')" data-lang="ja">日本語</button>
+            <button class="lang-btn" onclick="changeLanguage('zh')" data-lang="zh">中文</button>
+        </div>
+    </div>
     
     <div class="message" style="margin-top: 10px; font-size: 13px;">
         © Copyright 2026 Yoni Moreno.
@@ -686,6 +755,194 @@
     </script>
 
     <script>
+        // Multi-language translations
+        const translations = {
+            en: {
+                title: "Counting Sheep",
+                subtitle: "Drift into dreams",
+                counterLabel: "Sheep Counted",
+                supportTitle: "Enjoying the Sheep?",
+                supportText: "Help keep this project alive and support the development of new calming features",
+                coffeeButton: "Buy me a coffee",
+                resetButton: "Reset Counter",
+                message: "Close your eyes and let sleep find you...",
+                cookieText: "🍪 This website uses cookies to analyze traffic with Google Analytics. By continuing, you accept our use of cookies.",
+                cookieAccept: "Accept"
+            },
+            es: {
+                title: "Contando Ovejas",
+                subtitle: "Déjate llevar a los sueños",
+                counterLabel: "Ovejas Contadas",
+                supportTitle: "¿Disfrutando las Ovejas?",
+                supportText: "Ayuda a mantener este proyecto vivo y apoya el desarrollo de nuevas funciones relajantes",
+                coffeeButton: "Cómprame un café",
+                resetButton: "Reiniciar Contador",
+                message: "Cierra los ojos y deja que el sueño te encuentre...",
+                cookieText: "🍪 Este sitio web utiliza cookies para analizar el tráfico con Google Analytics. Al continuar, aceptas nuestro uso de cookies.",
+                cookieAccept: "Aceptar"
+            },
+            fr: {
+                title: "Compter les Moutons",
+                subtitle: "Plongez dans les rêves",
+                counterLabel: "Moutons Comptés",
+                supportTitle: "Vous Aimez les Moutons?",
+                supportText: "Aidez à maintenir ce projet en vie et soutenez le développement de nouvelles fonctionnalités apaisantes",
+                coffeeButton: "Offrez-moi un café",
+                resetButton: "Réinitialiser",
+                message: "Fermez les yeux et laissez le sommeil vous trouver...",
+                cookieText: "🍪 Ce site utilise des cookies pour analyser le trafic avec Google Analytics. En continuant, vous acceptez notre utilisation des cookies.",
+                cookieAccept: "Accepter"
+            },
+            de: {
+                title: "Schäfchen Zählen",
+                subtitle: "Gleite in Träume",
+                counterLabel: "Schafe Gezählt",
+                supportTitle: "Magst du die Schafe?",
+                supportText: "Hilf dieses Projekt am Leben zu erhalten und unterstütze die Entwicklung neuer beruhigender Funktionen",
+                coffeeButton: "Kauf mir einen Kaffee",
+                resetButton: "Zurücksetzen",
+                message: "Schließe deine Augen und lass den Schlaf dich finden...",
+                cookieText: "🍪 Diese Website verwendet Cookies zur Analyse des Traffics mit Google Analytics. Durch die Nutzung akzeptierst du unsere Cookie-Verwendung.",
+                cookieAccept: "Akzeptieren"
+            },
+            pl: {
+                title: "Liczenie Owiec",
+                subtitle: "Zanurz się w marzeniach",
+                counterLabel: "Policzonych Owiec",
+                supportTitle: "Podoba Ci Się?",
+                supportText: "Pomóż utrzymać ten projekt i wspieraj rozwój nowych uspokajających funkcji",
+                coffeeButton: "Postaw mi kawę",
+                resetButton: "Resetuj Licznik",
+                message: "Zamknij oczy i pozwól snowi cię znaleźć...",
+                cookieText: "🍪 Ta strona używa cookies do analizy ruchu przez Google Analytics. Kontynuując, akceptujesz nasze użycie cookies.",
+                cookieAccept: "Akceptuj"
+            },
+            it: {
+                title: "Contare le Pecore",
+                subtitle: "Immergiti nei sogni",
+                counterLabel: "Pecore Contate",
+                supportTitle: "Ti Piacciono le Pecore?",
+                supportText: "Aiuta a mantenere vivo questo progetto e supporta lo sviluppo di nuove funzionalità rilassanti",
+                coffeeButton: "Offrimi un caffè",
+                resetButton: "Resetta",
+                message: "Chiudi gli occhi e lascia che il sonno ti trovi...",
+                cookieText: "🍪 Questo sito utilizza cookie per analizzare il traffico con Google Analytics. Continuando, accetti il nostro utilizzo dei cookie.",
+                cookieAccept: "Accetta"
+            },
+            pt: {
+                title: "Contar Ovelhas",
+                subtitle: "Mergulhe nos sonhos",
+                counterLabel: "Ovelhas Contadas",
+                supportTitle: "Gostando das Ovelhas?",
+                supportText: "Ajude a manter este projeto vivo e apoie o desenvolvimento de novos recursos relaxantes",
+                coffeeButton: "Me pague um café",
+                resetButton: "Resetar",
+                message: "Feche os olhos e deixe o sono te encontrar...",
+                cookieText: "🍪 Este site usa cookies para analisar o tráfego com Google Analytics. Ao continuar, você aceita nosso uso de cookies.",
+                cookieAccept: "Aceitar"
+            },
+            ja: {
+                title: "羊を数える",
+                subtitle: "夢の中へ",
+                counterLabel: "数えた羊",
+                supportTitle: "羊を楽しんでいますか？",
+                supportText: "このプロジェクトを維持し、新しいリラックス機能の開発をサポートしてください",
+                coffeeButton: "コーヒーをおごる",
+                resetButton: "リセット",
+                message: "目を閉じて、眠りがあなたを見つけるまで...",
+                cookieText: "🍪 このウェブサイトはGoogle Analyticsでトラフィックを分析するためにCookieを使用しています。続行することで、Cookieの使用に同意したことになります。",
+                cookieAccept: "同意する"
+            },
+            zh: {
+                title: "数羊",
+                subtitle: "进入梦乡",
+                counterLabel: "已数绵羊",
+                supportTitle: "喜欢这些羊吗？",
+                supportText: "帮助维持这个项目并支持开发新的放松功能",
+                coffeeButton: "请我喝咖啡",
+                resetButton: "重置",
+                message: "闭上眼睛，让睡眠找到你...",
+                cookieText: "🍪 本网站使用Cookie通过Google Analytics分析流量。继续使用即表示您接受我们使用Cookie。",
+                cookieAccept: "接受"
+            },
+            ru: {
+                title: "Считаем Овец",
+                subtitle: "Погрузитесь в сны",
+                counterLabel: "Овец Посчитано",
+                supportTitle: "Нравятся Овечки?",
+                supportText: "Помогите поддержать этот проект и разработку новых успокаивающих функций",
+                coffeeButton: "Купить мне кофе",
+                resetButton: "Сбросить",
+                message: "Закройте глаза и позвольте сну найти вас...",
+                cookieText: "🍪 Этот сайт использует файлы cookie для анализа трафика с помощью Google Analytics. Продолжая, вы соглашаетесь с использованием файлов cookie.",
+                cookieAccept: "Принять"
+            },
+            uk: {
+                title: "Рахуємо Овець",
+                subtitle: "Поринь у мрії",
+                counterLabel: "Овець Пораховано",
+                supportTitle: "Подобаються Вівці?",
+                supportText: "Допоможіть підтримати цей проект і розробку нових заспокійливих функцій",
+                coffeeButton: "Частуй мене кавою",
+                resetButton: "Скинути",
+                message: "Заплющ очі і дозволь сну знайти тебе...",
+                cookieText: "🍪 Цей сайт використовує файли cookie для аналізу трафіку через Google Analytics. Продовжуючи, ви приймаєте використання файлів cookie.",
+                cookieAccept: "Прийняти"
+            }
+        };
+
+        // Detect browser language
+        function getUserLanguage() {
+            // Check if user manually selected a language
+            const savedLang = localStorage.getItem('selectedLanguage');
+            if (savedLang && translations[savedLang]) {
+                return savedLang;
+            }
+            
+            // Otherwise use browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            const langCode = browserLang.split('-')[0]; // 'en-US' -> 'en'
+            return translations[langCode] ? langCode : 'en';
+        }
+
+        // Change language manually
+        function changeLanguage(langCode) {
+            localStorage.setItem('selectedLanguage', langCode);
+            applyTranslations();
+        }
+
+        // Apply translations
+        function applyTranslations() {
+            const lang = getUserLanguage();
+            const t = translations[lang];
+            
+            // Update page title
+            document.title = t.title + ' - Free Sleep Aid Tool';
+            
+            // Update visible text
+            document.querySelector('.title').textContent = t.title;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            document.querySelector('.counter-label').textContent = t.counterLabel;
+            document.querySelector('.support-title').textContent = t.supportTitle;
+            document.querySelector('.support-text').textContent = t.supportText;
+            document.querySelector('.coffee-btn span:last-child').textContent = t.coffeeButton;
+            document.querySelector('.reset-btn').textContent = t.resetButton;
+            document.querySelectorAll('.message')[0].textContent = t.message;
+            document.querySelector('.cookie-text').innerHTML = t.cookieText;
+            document.querySelector('.cookie-accept').textContent = t.cookieAccept;
+            
+            // Highlight active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Apply translations when DOM is ready
+        document.addEventListener('DOMContentLoaded', applyTranslations);
+
         let count = 0;
         const counterElement = document.getElementById('counter');
         const scene = document.getElementById('scene');
