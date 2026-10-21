@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <meta name="theme-color" content="#0f1729">
     <!-- Primary Meta Tags -->
     <title>Counting Sheep - Free Sleep Aid Tool | Fall Asleep Fast</title>
     <meta name="title" content="Counting Sheep - Free Sleep Aid Tool | Fall Asleep Fast">
@@ -645,6 +646,18 @@
                 height: 75px;
             }
         }
+
+        .tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:0 0 28px}
+        .tool-btn{font-family:inherit;font-size:15px;color:var(--warm-white);background:rgba(180,167,214,.12);border:1px solid rgba(180,167,214,.3);border-radius:999px;padding:10px 20px;cursor:pointer;transition:background .3s}
+        .tool-btn:hover,.tool-btn[aria-pressed="true"]{background:rgba(180,167,214,.28)}
+        .tool-btn:focus-visible,.reset-btn:focus-visible,.lang-btn:focus-visible{outline:2px solid var(--soft-lavender);outline-offset:3px}
+        .night{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 1s linear;z-index:50}
+        .night.on{opacity:.88}
+        .night.done{pointer-events:auto;cursor:pointer}
+        .about{position:relative;z-index:10;max-width:720px;margin:0 auto;padding:30px 24px 50px;line-height:1.75;color:rgba(255,254,249,.82)}
+        .about h2{font-family:'Playfair Display',serif;font-weight:600;font-size:28px;margin-bottom:14px;color:var(--warm-white)}
+        .about h3{font-family:'Playfair Display',serif;font-weight:600;font-size:19px;margin:26px 0 6px;color:var(--soft-lavender)}
+        @media (prefers-reduced-motion:reduce){.star,.moon,.grass-blade{animation:none}}
     </style>
 </head>
 <body>
@@ -681,6 +694,10 @@
     </div>
     
     <div class="controls">
+        <div class="tools">
+            <button class="tool-btn" id="soundBtn" aria-pressed="false">🌙 <span id="soundLabel">Soft noise</span></button>
+            <button class="tool-btn" id="timerBtn">⏱️ <span id="timerLabel">Sleep timer: off</span></button>
+        </div>
         <div class="support-section">
             <h3 class="support-title">Enjoying the Sheep?</h3>
             <p class="support-text">Help keep this project alive and support the development of new calming features</p>
@@ -696,6 +713,15 @@
     <div class="message">
         Close your eyes and let sleep find you...
     </div>
+
+    <section class="about" id="about">
+        <h2>Can't sleep? Count sheep online</h2>
+        <p>This free counting sheep website shows one calm sheep at a time hopping over a fence, every three seconds. Follow the rhythm, keep your breathing slow, and let your mind settle. No ads, no sign-up, nothing to install.</p>
+        <h3>Does counting sheep actually work?</h3>
+        <p>It is a simple, monotonous task that gives a busy mind something gentle to focus on instead of worries. Some research suggests that imagining a calm scene helps certain people fall asleep faster than counting alone, so picture the meadow too. This is not a medical treatment: if sleeplessness lasts for weeks, talk to a doctor.</p>
+        <h3>How to use this sleep aid</h3>
+        <p>Lie down, lower your screen brightness, switch on the soft noise if you like, and choose a sleep timer. The screen slowly fades to dark and the sheep stop on their own.</p>
+    </section>
 
     <!-- Language Selector -->
     <div class="language-selector">
@@ -720,6 +746,8 @@
     </div>
 
     <!-- Cookie Consent Banner -->
+    <div class="night" id="night"></div>
+
     <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-text">
             🍪 This website uses cookies to analyze traffic with Google Analytics. By continuing, you accept our use of cookies.
@@ -745,11 +773,6 @@
       "author": {
         "@type": "Person",
         "name": "Yoni Moreno"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "ratingCount": "1"
       }
     }
     </script>
@@ -931,6 +954,10 @@
             document.querySelector('.cookie-text').innerHTML = t.cookieText;
             document.querySelector('.cookie-accept').textContent = t.cookieAccept;
             
+            document.documentElement.lang = lang;
+            document.getElementById('about').innerHTML = aboutText[lang] || aboutEn;
+            syncTools();
+
             // Highlight active language button
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -978,6 +1005,7 @@
         
         // Create sheep with custom images
         function createSheep() {
+            if (paused || document.hidden) return;
             const sheep = document.createElement('div');
             sheep.className = 'sheep jumping';
 
@@ -1019,6 +1047,72 @@
         // Preload both sheep images for instant swap
         const imgStatic  = new Image(); imgStatic.src  = 'sheep_static.png';
         const imgJumping = new Image(); imgJumping.src = 'sheep_jumping.png';
+
+        // ---- Sleep tools: soft noise, sleep timer, screen fade ----
+        let paused = false, rain = null, gain = null, ac = null, timerMin = 0, timerId = null;
+        const aboutEl = document.getElementById('about');
+        const aboutEn = aboutEl.innerHTML;
+        const aboutText = { es: `<h2>¿No puedes dormir? Cuenta ovejas online</h2>
+        <p>Esta web gratuita para contar ovejas muestra una oveja tranquila saltando una valla cada tres segundos. Sigue el ritmo, respira despacio y deja que la mente se calme. Sin anuncios, sin registro y sin instalar nada.</p>
+        <h3>¿Contar ovejas funciona de verdad?</h3>
+        <p>Es una tarea simple y monótona que da a una mente inquieta algo suave en lo que centrarse en lugar de las preocupaciones. Algunos estudios sugieren que imaginar una escena tranquila ayuda a ciertas personas a dormirse antes que solo contar, así que imagina también el prado. No es un tratamiento médico: si el insomnio dura semanas, consulta a un médico.</p>
+        <h3>Cómo usarlo</h3>
+        <p>Túmbate, baja el brillo, activa el ruido suave si quieres y elige un temporizador: la pantalla se irá oscureciendo y las ovejas pararán solas.</p>` };
+        const ui = {
+            en: { sound: 'Soft noise', timer: 'Sleep timer', off: 'off', min: 'min' },
+            es: { sound: 'Ruido suave', timer: 'Temporizador', off: 'apagado', min: 'min' }
+        };
+        const tr = k => (ui[getUserLanguage()] || ui.en)[k];
+        const soundBtn = document.getElementById('soundBtn');
+        const timerBtn = document.getElementById('timerBtn');
+        const night = document.getElementById('night');
+
+        function syncTools() {
+            soundBtn.setAttribute('aria-pressed', String(!!rain));
+            document.getElementById('soundLabel').textContent = tr('sound');
+            document.getElementById('timerLabel').textContent = tr('timer') + ': ' + (timerMin ? timerMin + ' ' + tr('min') : tr('off'));
+        }
+
+        // Brown noise generated in the browser: no audio files needed
+        function startNoise() {
+            ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+            ac.resume();
+            const len = ac.sampleRate * 4, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+            let last = 0;
+            for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+            rain = ac.createBufferSource(); rain.buffer = buf; rain.loop = true;
+            const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900;
+            gain = ac.createGain(); gain.gain.setValueAtTime(0, ac.currentTime);
+            gain.gain.linearRampToValueAtTime(0.5, ac.currentTime + 3);
+            rain.connect(lp); lp.connect(gain); gain.connect(ac.destination); rain.start();
+        }
+
+        function stopNoise(fade = 1) {
+            if (!rain) return;
+            const r = rain, g = gain; rain = null;
+            g.gain.cancelScheduledValues(ac.currentTime);
+            g.gain.setValueAtTime(g.gain.value, ac.currentTime);
+            g.gain.linearRampToValueAtTime(0, ac.currentTime + fade);
+            setTimeout(() => r.stop(), fade * 1000 + 100);
+        }
+
+        function setTimer(min) {
+            clearTimeout(timerId);
+            timerMin = min; paused = false;
+            night.className = 'night'; night.style.transitionDuration = '1s';
+            void night.offsetWidth;
+            if (min) {
+                night.style.transitionDuration = (min * 60) + 's';
+                requestAnimationFrame(() => night.classList.add('on'));
+                if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {});
+                timerId = setTimeout(() => { paused = true; stopNoise(20); night.classList.add('done'); syncTools(); }, min * 60000);
+            }
+            syncTools();
+        }
+
+        soundBtn.addEventListener('click', () => { rain ? stopNoise() : startNoise(); syncTools(); });
+        timerBtn.addEventListener('click', () => { const o = [0, 15, 30, 60]; setTimer(o[(o.indexOf(timerMin) + 1) % o.length]); });
+        night.addEventListener('click', () => setTimer(0));
 
         // Initialize
         createStars();
