@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://sheepcount.rest/</loc>
-    <lastmod>2026-02-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://sheepcount.rest/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sheepcount.rest/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sheepcount.rest/es/"/></url>
+  <url><loc>https://sheepcount.rest/es/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sheepcount.rest/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sheepcount.rest/es/"/></url>
 </urlset>

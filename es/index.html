@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es" data-pagelang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="theme-color" content="#0f1729">
+    <!-- Primary Meta Tags -->
+    <title>Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido</title>
+    <meta name="title" content="Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido">
+    <meta name="description" content="¿No puedes dormir? Mira ovejas tranquilas saltar una valla en esta herramienta gratuita y relajante. Sin anuncios ni registro: cuenta ovejas y duérmete de forma natural.">
+    <meta name="keywords" content="contar ovejas, contar ovejas online, ayuda para dormir, dormir rápido, insomnio, relajación">
+    <meta name="author" content="Yoni Moreno">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sheepcount.rest/es/">
+    <link rel="alternate" hreflang="en" href="https://sheepcount.rest/">
+    <link rel="alternate" hreflang="es" href="https://sheepcount.rest/es/">
+    <link rel="alternate" hreflang="x-default" href="https://sheepcount.rest/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sheepcount.rest/es/">
+    <meta property="og:title" content="Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido">
+    <meta property="og:description" content="¿No puedes dormir? Mira ovejas tranquilas saltar una valla en esta herramienta gratuita y relajante. Sin anuncios ni registro: cuenta ovejas y duérmete de forma natural.">
+    <meta property="og:image" content="https://sheepcount.rest/preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sheepcount.rest/es/">
+    <meta property="twitter:title" content="Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido">
+    <meta property="twitter:description" content="¿No puedes dormir? Mira ovejas tranquilas saltar una valla en esta herramienta gratuita y relajante. Sin anuncios ni registro: cuenta ovejas y duérmete de forma natural.">
+    <meta property="twitter:image" content="https://sheepcount.rest/preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐑</text></svg>">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2H3XGDC1V"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+        try { if (localStorage.getItem('cookieConsent') === 'accepted') gtag('consent', 'update', { analytics_storage: 'granted' }); } catch (e) {}
+        gtag('config', 'G-S2H3XGDC1V');
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --midnight-blue: #0f1729;
+            --deep-navy: #1a2541;
+            --soft-lavender: #b4a7d6;
+            --pale-moon: #f5f3e8;
+            --warm-white: #fffef9;
+            --grass-dark: #2d4a3e;
+            --grass-light: #3d5a4e;
+            --wood-brown: #6b4423;
+            --wood-light: #8b5a2b;
+            --sheep-wool: #f8f6f0;
+            --sheep-face: #3a3a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(to bottom, 
+                var(--midnight-blue) 0%, 
+                var(--deep-navy) 60%, 
+                #243152 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--warm-white);
+        }
+
+        /* Animated starfield */
+        .stars-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .star.small {
+            width: 1px;
+            height: 1px;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star.large {
+            width: 3px;
+            height: 3px;
+            animation: twinkle 5s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Moon */
+        .moon {
+            position: fixed;
+            top: 80px;
+            right: 120px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 35% 35%, var(--pale-moon), #e8e5d0);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 40px rgba(245, 243, 232, 0.4),
+                0 0 80px rgba(245, 243, 232, 0.2),
+                inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+            animation: moonGlow 8s ease-in-out infinite;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            top: 25px;
+            left: 30px;
+        }
+
+        .moon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            bottom: 30px;
+            right: 25px;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(245, 243, 232, 0.4), 0 0 80px rgba(245, 243, 232, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(245, 243, 232, 0.6), 0 0 120px rgba(245, 243, 232, 0.3); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 600;
+            color: var(--warm-white);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--soft-lavender);
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* Counter */
+        .counter-container {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .counter-label {
+            font-size: 16px;
+            color: var(--soft-lavender);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif;
+            font-size: 96px;
+            font-weight: 400;
+            color: var(--warm-white);
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .counter.increment {
+            animation: counterPulse 0.5s ease;
+        }
+
+        @keyframes counterPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Scene */
+        .scene-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 500px;
+            padding: 0 40px;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ground */
+        .ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 140px;
+            background: linear-gradient(to bottom, var(--grass-light), var(--grass-dark));
+            border-top: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ground::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 3px,
+                rgba(0, 0, 0, 0.05) 3px,
+                rgba(0, 0, 0, 0.05) 6px
+            );
+        }
+
+        /* Grass blades */
+        .grass {
+            position: absolute;
+            bottom: 140px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .grass-blade {
+            position: absolute;
+            bottom: 0;
+            width: 3px;
+            height: 30px;
+            background: linear-gradient(to top, var(--grass-dark), var(--grass-light));
+            border-radius: 50% 50% 0 0;
+            transform-origin: bottom center;
+            animation: grassSway 3s ease-in-out infinite;
+        }
+
+        @keyframes grassSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        /* Fence */
+        .fence {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 140px;
+            z-index: 5;
+        }
+
+        .fence-post {
+            position: absolute;
+            width: 16px;
+            height: 140px;
+            background: linear-gradient(to right, var(--wood-brown), var(--wood-light), var(--wood-brown));
+            border-radius: 3px 3px 0 0;
+            bottom: 0;
+            box-shadow: 
+                inset -2px 0 4px rgba(0, 0, 0, 0.3),
+                2px 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .fence-post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2px;
+            right: 2px;
+            height: 3px;
+            background: rgba(139, 90, 43, 0.8);
+            border-radius: 50%;
+        }
+
+        .fence-post:nth-child(1) { left: 0; }
+        .fence-post:nth-child(2) { left: 83.5px; }
+        .fence-post:nth-child(3) { left: 167px; }
+        .fence-post:nth-child(4) { left: 250.5px; }
+        .fence-post:nth-child(5) { left: 334px; }
+
+        .fence-rail {
+            position: absolute;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(to bottom, var(--wood-light), var(--wood-brown));
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+                0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .fence-rail:nth-child(6) { top: 20px; }
+        .fence-rail:nth-child(7) { top: 60px; }
+        .fence-rail:nth-child(8) { top: 100px; }
+
+        /* Sheep */
+        .sheep {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            bottom: 170px;
+            left: -150px;
+            z-index: 6;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+        }
+
+        .sheep svg {
+            display: block;
+        }
+
+        .sheep.jumping {
+            animation: sheepJump 3s ease-in-out;
+        }
+
+        @keyframes sheepJump {
+            0% {
+                left: -150px;
+                bottom: 170px;
+                transform: rotate(0deg) scaleX(1);
+            }
+            15% {
+                left: 20%;
+                bottom: 170px;
+                transform: rotate(0deg) scaleX(1);
+            }
+            35% {
+                left: 42%;
+                bottom: 400px;
+                transform: rotate(-18deg) scaleX(1);
+            }
+            50% {
+                left: 58%;
+                bottom: 400px;
+                transform: rotate(-12deg) scaleX(1);
+            }
+            65% {
+                left: 78%;
+                bottom: 170px;
+                transform: rotate(0deg) scaleX(1);
+            }
+            85% {
+                left: 100%;
+                bottom: 170px;
+                transform: rotate(0deg) scaleX(1);
+            }
+            100% {
+                left: 130%;
+                bottom: 170px;
+                transform: rotate(0deg) scaleX(1);
+            }
+        }
+
+        /* Controls */
+        .controls {
+            text-align: center;
+            padding: 60px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .support-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(180, 167, 214, 0.08);
+            border: 1px solid rgba(180, 167, 214, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.4s ease;
+        }
+
+        .support-section:hover {
+            background: rgba(180, 167, 214, 0.12);
+            border-color: rgba(180, 167, 214, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .support-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--warm-white);
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .support-text {
+            font-size: 15px;
+            color: var(--soft-lavender);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .coffee-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Lora', serif;
+            padding: 14px 36px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #FFDD00 0%, #FDB915 100%);
+            border: none;
+            color: #000000;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(255, 221, 0, 0.3);
+        }
+
+        .coffee-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(255, 221, 0, 0.5);
+            background: linear-gradient(135deg, #FFE54C 0%, #FFDD00 100%);
+        }
+
+        .coffee-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .coffee-icon {
+            font-size: 20px;
+        }
+
+        .reset-btn {
+            font-family: 'Lora', serif;
+            padding: 16px 48px;
+            font-size: 16px;
+            background: rgba(180, 167, 214, 0.15);
+            border: 2px solid rgba(180, 167, 214, 0.4);
+            color: var(--warm-white);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .reset-btn:hover {
+            background: rgba(180, 167, 214, 0.25);
+            border-color: rgba(180, 167, 214, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .reset-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer message */
+        .message {
+            text-align: center;
+            padding: 20px;
+            font-size: 15px;
+            color: var(--soft-lavender);
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            text-align: center;
+            padding: 30px 20px 20px;
+            font-size: 13px;
+            color: var(--soft-lavender);
+            opacity: 0.8;
+        }
+
+        .language-label {
+            margin-bottom: 10px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .language-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            background: rgba(180, 167, 214, 0.1);
+            border: 1px solid rgba(180, 167, 214, 0.2);
+            color: var(--soft-lavender);
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .lang-btn:hover {
+            background: rgba(180, 167, 214, 0.2);
+            border-color: rgba(180, 167, 214, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .lang-btn.active {
+            background: rgba(180, 167, 214, 0.3);
+            border-color: rgba(180, 167, 214, 0.5);
+            color: var(--warm-white);
+        }
+
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 37, 65, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border-top: 1px solid rgba(180, 167, 214, 0.3);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            flex-wrap: wrap;
+        }
+
+        .cookie-banner.show {
+            transform: translateY(0);
+        }
+
+        .cookie-text {
+            color: var(--warm-white);
+            font-size: 14px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: var(--soft-lavender);
+            text-decoration: underline;
+        }
+
+        .cookie-accept {
+            padding: 10px 30px;
+            background: rgba(180, 167, 214, 0.2);
+            border: 1px solid rgba(180, 167, 214, 0.4);
+            color: var(--warm-white);
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cookie-accept:hover {
+            background: rgba(180, 167, 214, 0.3);
+            border-color: rgba(180, 167, 214, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 40px;
+            }
+            .counter {
+                font-size: 72px;
+            }
+            .moon {
+                width: 80px;
+                height: 80px;
+                top: 50px;
+                right: 40px;
+            }
+            .fence {
+                width: 250px;
+            }
+            .fence-post:nth-child(1) { left: 0; }
+            .fence-post:nth-child(2) { left: 59px; }
+            .fence-post:nth-child(3) { left: 118px; }
+            .fence-post:nth-child(4) { left: 177px; }
+            .fence-post:nth-child(5) { left: 234px; }
+            .sheep {
+                width: 90px;
+                height: 75px;
+            }
+        }
+
+        .tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:0 0 28px}
+        .tool-btn{font-family:inherit;font-size:15px;color:var(--warm-white);background:rgba(180,167,214,.12);border:1px solid rgba(180,167,214,.3);border-radius:999px;padding:10px 20px;cursor:pointer;transition:background .3s}
+        .tool-btn:hover,.tool-btn[aria-pressed="true"]{background:rgba(180,167,214,.28)}
+        .tool-btn:focus-visible,.reset-btn:focus-visible,.lang-btn:focus-visible{outline:2px solid var(--soft-lavender);outline-offset:3px}
+        .night{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 1s linear;z-index:50}
+        .night.on{opacity:.88}
+        .night.done{pointer-events:auto;cursor:pointer}
+        .about{position:relative;z-index:10;max-width:720px;margin:0 auto;padding:30px 24px 50px;line-height:1.75;color:rgba(255,254,249,.82)}
+        .about h2{font-family:'Playfair Display',serif;font-weight:600;font-size:28px;margin-bottom:14px;color:var(--warm-white)}
+        .about h3{font-family:'Playfair Display',serif;font-weight:600;font-size:19px;margin:26px 0 6px;color:var(--soft-lavender)}
+        @media (prefers-reduced-motion:reduce){.star,.moon,.grass-blade{animation:none}}
+    </style>
+</head>
+<body>
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="moon"></div>
+    
+    <div class="header">
+        <h1 class="title">Contando Ovejas</h1>
+        <p class="subtitle">Déjate llevar a los sueños</p>
+    </div>
+    
+    <div class="counter-container">
+        <div class="counter-label">Sheep Counted</div>
+        <div class="counter" id="counter">0</div>
+    </div>
+    
+    <div class="scene-container">
+        <div class="scene" id="scene">
+            <div class="grass" id="grass"></div>
+            
+            <div class="fence">
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-post"></div>
+                <div class="fence-rail"></div>
+                <div class="fence-rail"></div>
+                <div class="fence-rail"></div>
+            </div>
+            
+            <div class="ground"></div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="tools">
+            <button class="tool-btn" id="soundBtn" aria-pressed="false">🌙 <span id="soundLabel">Soft noise</span></button>
+            <button class="tool-btn" id="timerBtn">⏱️ <span id="timerLabel">Sleep timer: off</span></button>
+        </div>
+        <div class="support-section">
+            <h3 class="support-title">Enjoying the Sheep?</h3>
+            <p class="support-text">Help keep this project alive and support the development of new calming features</p>
+            <a href="https://buymeacoffee.com/yonimoreno" target="_blank" class="coffee-btn">
+                <span class="coffee-icon">☕</span>
+                <span>Buy me a coffee</span>
+            </a>
+        </div>
+        
+        <button class="reset-btn" onclick="resetCounter()">Reset Counter</button>
+    </div>
+    
+    <div class="message">
+        Close your eyes and let sleep find you...
+    </div>
+
+    <section class="about" id="about"><h2>¿No puedes dormir? Cuenta ovejas online</h2>
+        <p>Esta web gratuita para contar ovejas muestra una oveja tranquila saltando una valla cada tres segundos. Sigue el ritmo, respira despacio y deja que la mente se calme. Sin anuncios, sin registro y sin instalar nada.</p>
+        <h3>¿Contar ovejas funciona de verdad?</h3>
+        <p>Es una tarea simple y monótona que da a una mente inquieta algo suave en lo que centrarse en lugar de las preocupaciones. Algunos estudios sugieren que imaginar una escena tranquila ayuda a ciertas personas a dormirse antes que solo contar, así que imagina también el prado. No es un tratamiento médico: si el insomnio dura semanas, consulta a un médico.</p>
+        <h3>Cómo usarlo</h3>
+        <p>Túmbate, baja el brillo, activa el ruido suave si quieres y elige un temporizador: la pantalla se irá oscureciendo y las ovejas pararán solas.</p></section>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <div class="language-label">🌍 Language / Idioma / Langue / Sprache / Мова</div>
+        <div class="language-buttons" id="languageButtons">
+            <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">English</button>
+            <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">Español</button>
+            <button class="lang-btn" onclick="changeLanguage('fr')" data-lang="fr">Français</button>
+            <button class="lang-btn" onclick="changeLanguage('de')" data-lang="de">Deutsch</button>
+            <button class="lang-btn" onclick="changeLanguage('pl')" data-lang="pl">Polski</button>
+            <button class="lang-btn" onclick="changeLanguage('uk')" data-lang="uk">Українська</button>
+            <button class="lang-btn" onclick="changeLanguage('it')" data-lang="it">Italiano</button>
+            <button class="lang-btn" onclick="changeLanguage('pt')" data-lang="pt">Português</button>
+            <button class="lang-btn" onclick="changeLanguage('ru')" data-lang="ru">Русский</button>
+            <button class="lang-btn" onclick="changeLanguage('ja')" data-lang="ja">日本語</button>
+            <button class="lang-btn" onclick="changeLanguage('zh')" data-lang="zh">中文</button>
+        </div>
+    </div>
+    
+    <div class="message" style="margin-top: 10px; font-size: 13px;">
+        © Copyright 2026 Yoni Moreno.
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div class="night" id="night"></div>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-text">
+            🍪 This website uses cookies to analyze traffic with Google Analytics. By continuing, you accept our use of cookies.
+        </div>
+        <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
+    </div>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Counting Sheep",
+      "description": "Free online sleep aid tool that helps you fall asleep by watching peaceful sheep jump over a fence",
+      "url": "https://sheepcount.rest/es/",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Yoni Moreno"
+      }
+    }
+    </script>
+
+    <script>
+        // Multi-language translations
+        const translations = {
+            en: {
+                title: "Counting Sheep",
+                subtitle: "Drift into dreams",
+                counterLabel: "Sheep Counted",
+                supportTitle: "Enjoying the Sheep?",
+                supportText: "Help keep this project alive and support the development of new calming features",
+                coffeeButton: "Buy me a coffee",
+                resetButton: "Reset Counter",
+                message: "Close your eyes and let sleep find you...",
+                cookieText: "🍪 This website uses cookies to analyze traffic with Google Analytics. By continuing, you accept our use of cookies.",
+                cookieAccept: "Accept"
+            },
+            es: {
+                title: "Contando Ovejas",
+                subtitle: "Déjate llevar a los sueños",
+                counterLabel: "Ovejas Contadas",
+                supportTitle: "¿Disfrutando las Ovejas?",
+                supportText: "Ayuda a mantener este proyecto vivo y apoya el desarrollo de nuevas funciones relajantes",
+                coffeeButton: "Cómprame un café",
+                resetButton: "Reiniciar Contador",
+                message: "Cierra los ojos y deja que el sueño te encuentre...",
+                cookieText: "🍪 Este sitio web utiliza cookies para analizar el tráfico con Google Analytics. Al continuar, aceptas nuestro uso de cookies.",
+                cookieAccept: "Aceptar"
+            },
+            fr: {
+                title: "Compter les Moutons",
+                subtitle: "Plongez dans les rêves",
+                counterLabel: "Moutons Comptés",
+                supportTitle: "Vous Aimez les Moutons?",
+                supportText: "Aidez à maintenir ce projet en vie et soutenez le développement de nouvelles fonctionnalités apaisantes",
+                coffeeButton: "Offrez-moi un café",
+                resetButton: "Réinitialiser",
+                message: "Fermez les yeux et laissez le sommeil vous trouver...",
+                cookieText: "🍪 Ce site utilise des cookies pour analyser le trafic avec Google Analytics. En continuant, vous acceptez notre utilisation des cookies.",
+                cookieAccept: "Accepter"
+            },
+            de: {
+                title: "Schäfchen Zählen",
+                subtitle: "Gleite in Träume",
+                counterLabel: "Schafe Gezählt",
+                supportTitle: "Magst du die Schafe?",
+                supportText: "Hilf dieses Projekt am Leben zu erhalten und unterstütze die Entwicklung neuer beruhigender Funktionen",
+                coffeeButton: "Kauf mir einen Kaffee",
+                resetButton: "Zurücksetzen",
+                message: "Schließe deine Augen und lass den Schlaf dich finden...",
+                cookieText: "🍪 Diese Website verwendet Cookies zur Analyse des Traffics mit Google Analytics. Durch die Nutzung akzeptierst du unsere Cookie-Verwendung.",
+                cookieAccept: "Akzeptieren"
+            },
+            pl: {
+                title: "Liczenie Owiec",
+                subtitle: "Zanurz się w marzeniach",
+                counterLabel: "Policzonych Owiec",
+                supportTitle: "Podoba Ci Się?",
+                supportText: "Pomóż utrzymać ten projekt i wspieraj rozwój nowych uspokajających funkcji",
+                coffeeButton: "Postaw mi kawę",
+                resetButton: "Resetuj Licznik",
+                message: "Zamknij oczy i pozwól snowi cię znaleźć...",
+                cookieText: "🍪 Ta strona używa cookies do analizy ruchu przez Google Analytics. Kontynuując, akceptujesz nasze użycie cookies.",
+                cookieAccept: "Akceptuj"
+            },
+            it: {
+                title: "Contare le Pecore",
+                subtitle: "Immergiti nei sogni",
+                counterLabel: "Pecore Contate",
+                supportTitle: "Ti Piacciono le Pecore?",
+                supportText: "Aiuta a mantenere vivo questo progetto e supporta lo sviluppo di nuove funzionalità rilassanti",
+                coffeeButton: "Offrimi un caffè",
+                resetButton: "Resetta",
+                message: "Chiudi gli occhi e lascia che il sonno ti trovi...",
+                cookieText: "🍪 Questo sito utilizza cookie per analizzare il traffico con Google Analytics. Continuando, accetti il nostro utilizzo dei cookie.",
+                cookieAccept: "Accetta"
+            },
+            pt: {
+                title: "Contar Ovelhas",
+                subtitle: "Mergulhe nos sonhos",
+                counterLabel: "Ovelhas Contadas",
+                supportTitle: "Gostando das Ovelhas?",
+                supportText: "Ajude a manter este projeto vivo e apoie o desenvolvimento de novos recursos relaxantes",
+                coffeeButton: "Me pague um café",
+                resetButton: "Resetar",
+                message: "Feche os olhos e deixe o sono te encontrar...",
+                cookieText: "🍪 Este site usa cookies para analisar o tráfego com Google Analytics. Ao continuar, você aceita nosso uso de cookies.",
+                cookieAccept: "Aceitar"
+            },
+            ja: {
+                title: "羊を数える",
+                subtitle: "夢の中へ",
+                counterLabel: "数えた羊",
+                supportTitle: "羊を楽しんでいますか？",
+                supportText: "このプロジェクトを維持し、新しいリラックス機能の開発をサポートしてください",
+                coffeeButton: "コーヒーをおごる",
+                resetButton: "リセット",
+                message: "目を閉じて、眠りがあなたを見つけるまで...",
+                cookieText: "🍪 このウェブサイトはGoogle Analyticsでトラフィックを分析するためにCookieを使用しています。続行することで、Cookieの使用に同意したことになります。",
+                cookieAccept: "同意する"
+            },
+            zh: {
+                title: "数羊",
+                subtitle: "进入梦乡",
+                counterLabel: "已数绵羊",
+                supportTitle: "喜欢这些羊吗？",
+                supportText: "帮助维持这个项目并支持开发新的放松功能",
+                coffeeButton: "请我喝咖啡",
+                resetButton: "重置",
+                message: "闭上眼睛，让睡眠找到你...",
+                cookieText: "🍪 本网站使用Cookie通过Google Analytics分析流量。继续使用即表示您接受我们使用Cookie。",
+                cookieAccept: "接受"
+            },
+            ru: {
+                title: "Считаем Овец",
+                subtitle: "Погрузитесь в сны",
+                counterLabel: "Овец Посчитано",
+                supportTitle: "Нравятся Овечки?",
+                supportText: "Помогите поддержать этот проект и разработку новых успокаивающих функций",
+                coffeeButton: "Купить мне кофе",
+                resetButton: "Сбросить",
+                message: "Закройте глаза и позвольте сну найти вас...",
+                cookieText: "🍪 Этот сайт использует файлы cookie для анализа трафика с помощью Google Analytics. Продолжая, вы соглашаетесь с использованием файлов cookie.",
+                cookieAccept: "Принять"
+            },
+            uk: {
+                title: "Рахуємо Овець",
+                subtitle: "Поринь у мрії",
+                counterLabel: "Овець Пораховано",
+                supportTitle: "Подобаються Вівці?",
+                supportText: "Допоможіть підтримати цей проект і розробку нових заспокійливих функцій",
+                coffeeButton: "Частуй мене кавою",
+                resetButton: "Скинути",
+                message: "Заплющ очі і дозволь сну знайти тебе...",
+                cookieText: "🍪 Цей сайт використовує файли cookie для аналізу трафіку через Google Analytics. Продовжуючи, ви приймаєте використання файлів cookie.",
+                cookieAccept: "Прийняти"
+            }
+        };
+
+        // Detect browser language
+        function getUserLanguage() {
+            if (window.chosenLang) return window.chosenLang;
+            if (document.documentElement.dataset.pagelang) return document.documentElement.dataset.pagelang;
+            // Check if user manually selected a language
+            const savedLang = localStorage.getItem('selectedLanguage');
+            if (savedLang && translations[savedLang]) {
+                return savedLang;
+            }
+            
+            // Otherwise use browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            const langCode = browserLang.split('-')[0]; // 'en-US' -> 'en'
+            return translations[langCode] ? langCode : 'en';
+        }
+
+        // Change language manually
+        function changeLanguage(langCode) {
+            const onEs = document.documentElement.dataset.pagelang === 'es';
+            localStorage.setItem('selectedLanguage', langCode);
+            if (langCode === 'es' && !onEs) { location.href = '/es/'; return; }
+            if (langCode === 'en' && onEs) { location.href = '/'; return; }
+            window.chosenLang = langCode;
+            applyTranslations();
+        }
+
+        // Apply translations
+        function applyTranslations() {
+            const lang = getUserLanguage();
+            const t = translations[lang];
+            
+            // Update page title
+            if (!document.documentElement.dataset.pagelang) document.title = t.title + ' - Free Sleep Aid Tool';
+            
+            // Update visible text
+            document.querySelector('.title').textContent = t.title;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            document.querySelector('.counter-label').textContent = t.counterLabel;
+            document.querySelector('.support-title').textContent = t.supportTitle;
+            document.querySelector('.support-text').textContent = t.supportText;
+            document.querySelector('.coffee-btn span:last-child').textContent = t.coffeeButton;
+            document.querySelector('.reset-btn').textContent = t.resetButton;
+            document.querySelectorAll('.message')[0].textContent = t.message;
+            document.querySelector('.cookie-text').innerHTML = t.cookieText;
+            document.querySelector('.cookie-accept').textContent = t.cookieAccept;
+            
+            document.documentElement.lang = lang;
+            document.getElementById('about').innerHTML = aboutText[lang] || aboutEn;
+            syncTools();
+
+            // Highlight active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Apply translations when DOM is ready
+        document.addEventListener('DOMContentLoaded', applyTranslations);
+
+        let count = 0;
+        const counterElement = document.getElementById('counter');
+        const scene = document.getElementById('scene');
+        
+        // Create stars
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const sizes = ['small', 'small', 'small', 'medium', 'medium', 'large'];
+            
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${sizes[Math.floor(Math.random() * sizes.length)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        // Create grass blades
+        function createGrass() {
+            const grassContainer = document.getElementById('grass');
+            for (let i = 0; i < 80; i++) {
+                const blade = document.createElement('div');
+                blade.className = 'grass-blade';
+                blade.style.left = (i * 1.5) + '%';
+                blade.style.height = (Math.random() * 15 + 20) + 'px';
+                blade.style.animationDelay = (Math.random() * 3) + 's';
+                blade.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                grassContainer.appendChild(blade);
+            }
+        }
+        
+        // Create sheep with custom images
+        function createSheep() {
+            if (paused || document.hidden) return;
+            const sheep = document.createElement('div');
+            sheep.className = 'sheep jumping';
+
+            const img = document.createElement('img');
+            img.src = '/sheep_static.png';
+            img.alt = 'Counting Sheep';
+            img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+            sheep.appendChild(img);
+            scene.appendChild(sheep);
+
+            // Animation is 3s total
+            // Jump starts at 15% = 0.45s, peaks at 35%-50% = 1.05s-1.5s, lands at 65% = 1.95s
+            const jumpStart = 3000 * 0.15;   // 450ms  - swap to jumping
+            const jumpLand  = 3000 * 0.65;   // 1950ms - swap back to static
+
+            setTimeout(() => { img.src = '/sheep_jumping.png'; }, jumpStart);
+            setTimeout(() => { img.src = '/sheep_static.png';  }, jumpLand);
+
+            // Update counter with animation
+            count++;
+            counterElement.textContent = count;
+            counterElement.classList.add('increment');
+            setTimeout(() => counterElement.classList.remove('increment'), 500);
+            
+            // Remove sheep after animation
+            setTimeout(() => {
+                sheep.remove();
+            }, 3000);
+        }
+        
+        // Reset counter
+        function resetCounter() {
+            count = 0;
+            counterElement.textContent = count;
+            counterElement.classList.add('increment');
+            setTimeout(() => counterElement.classList.remove('increment'), 500);
+        }
+        
+        // Preload both sheep images for instant swap
+        const imgStatic  = new Image(); imgStatic.src  = '/sheep_static.png';
+        const imgJumping = new Image(); imgJumping.src = '/sheep_jumping.png';
+
+        // ---- Sleep tools: soft noise, sleep timer, screen fade ----
+        let paused = false, rain = null, gain = null, ac = null, timerMin = 0, timerId = null;
+        const aboutEl = document.getElementById('about');
+        const aboutEn = aboutEl.innerHTML;
+        const aboutText = { es: `<h2>¿No puedes dormir? Cuenta ovejas online</h2>
+        <p>Esta web gratuita para contar ovejas muestra una oveja tranquila saltando una valla cada tres segundos. Sigue el ritmo, respira despacio y deja que la mente se calme. Sin anuncios, sin registro y sin instalar nada.</p>
+        <h3>¿Contar ovejas funciona de verdad?</h3>
+        <p>Es una tarea simple y monótona que da a una mente inquieta algo suave en lo que centrarse en lugar de las preocupaciones. Algunos estudios sugieren que imaginar una escena tranquila ayuda a ciertas personas a dormirse antes que solo contar, así que imagina también el prado. No es un tratamiento médico: si el insomnio dura semanas, consulta a un médico.</p>
+        <h3>Cómo usarlo</h3>
+        <p>Túmbate, baja el brillo, activa el ruido suave si quieres y elige un temporizador: la pantalla se irá oscureciendo y las ovejas pararán solas.</p>` };
+        const ui = {
+            en: { sound: 'Soft noise', timer: 'Sleep timer', off: 'off', min: 'min' },
+            es: { sound: 'Ruido suave', timer: 'Temporizador', off: 'apagado', min: 'min' }
+        };
+        const tr = k => (ui[getUserLanguage()] || ui.en)[k];
+        const soundBtn = document.getElementById('soundBtn');
+        const timerBtn = document.getElementById('timerBtn');
+        const night = document.getElementById('night');
+
+        function syncTools() {
+            soundBtn.setAttribute('aria-pressed', String(!!rain));
+            document.getElementById('soundLabel').textContent = tr('sound');
+            document.getElementById('timerLabel').textContent = tr('timer') + ': ' + (timerMin ? timerMin + ' ' + tr('min') : tr('off'));
+        }
+
+        // Brown noise generated in the browser: no audio files needed
+        function startNoise() {
+            ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+            ac.resume();
+            const len = ac.sampleRate * 4, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+            let last = 0;
+            for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+            rain = ac.createBufferSource(); rain.buffer = buf; rain.loop = true;
+            const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900;
+            gain = ac.createGain(); gain.gain.setValueAtTime(0, ac.currentTime);
+            gain.gain.linearRampToValueAtTime(0.5, ac.currentTime + 3);
+            rain.connect(lp); lp.connect(gain); gain.connect(ac.destination); rain.start();
+        }
+
+        function stopNoise(fade = 1) {
+            if (!rain) return;
+            const r = rain, g = gain; rain = null;
+            g.gain.cancelScheduledValues(ac.currentTime);
+            g.gain.setValueAtTime(g.gain.value, ac.currentTime);
+            g.gain.linearRampToValueAtTime(0, ac.currentTime + fade);
+            setTimeout(() => r.stop(), fade * 1000 + 100);
+        }
+
+        function setTimer(min) {
+            clearTimeout(timerId);
+            timerMin = min; paused = false;
+            night.className = 'night'; night.style.transitionDuration = '1s';
+            void night.offsetWidth;
+            if (min) {
+                night.style.transitionDuration = (min * 60) + 's';
+                requestAnimationFrame(() => night.classList.add('on'));
+                if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {});
+                timerId = setTimeout(() => { paused = true; stopNoise(20); night.classList.add('done'); syncTools(); }, min * 60000);
+            }
+            syncTools();
+        }
+
+        soundBtn.addEventListener('click', () => { rain ? stopNoise() : startNoise(); syncTools(); });
+        timerBtn.addEventListener('click', () => { const o = [0, 15, 30, 60]; setTimer(o[(o.indexOf(timerMin) + 1) % o.length]); });
+        night.addEventListener('click', () => setTimer(0));
+
+        // Initialize
+        createStars();
+        createGrass();
+        
+        // Start sheep animation
+        setTimeout(() => {
+            createSheep();
+            setInterval(createSheep, 3000);
+        }, 500);
+        
+        // Cookie Consent
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            gtag('consent', 'update', { analytics_storage: 'granted' });
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+        
+        // Show cookie banner if not accepted
+        window.addEventListener('load', () => {
+            if (!localStorage.getItem('cookieConsent')) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

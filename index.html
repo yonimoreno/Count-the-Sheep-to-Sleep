@@ -13,6 +13,9 @@
     <meta name="author" content="Yoni Moreno">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://sheepcount.rest/">
+    <link rel="alternate" hreflang="en" href="https://sheepcount.rest/">
+    <link rel="alternate" hreflang="es" href="https://sheepcount.rest/es/">
+    <link rel="alternate" hreflang="x-default" href="https://sheepcount.rest/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -37,6 +40,8 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+        gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+        try { if (localStorage.getItem('cookieConsent') === 'accepted') gtag('consent', 'update', { analytics_storage: 'granted' }); } catch (e) {}
         gtag('config', 'G-S2H3XGDC1V');
     </script>
     
@@ -916,6 +921,8 @@
 
         // Detect browser language
         function getUserLanguage() {
+            if (window.chosenLang) return window.chosenLang;
+            if (document.documentElement.dataset.pagelang) return document.documentElement.dataset.pagelang;
             // Check if user manually selected a language
             const savedLang = localStorage.getItem('selectedLanguage');
             if (savedLang && translations[savedLang]) {
@@ -930,7 +937,11 @@
 
         // Change language manually
         function changeLanguage(langCode) {
+            const onEs = document.documentElement.dataset.pagelang === 'es';
             localStorage.setItem('selectedLanguage', langCode);
+            if (langCode === 'es' && !onEs) { location.href = '/es/'; return; }
+            if (langCode === 'en' && onEs) { location.href = '/'; return; }
+            window.chosenLang = langCode;
             applyTranslations();
         }
 
@@ -940,7 +951,7 @@
             const t = translations[lang];
             
             // Update page title
-            document.title = t.title + ' - Free Sleep Aid Tool';
+            if (!document.documentElement.dataset.pagelang) document.title = t.title + ' - Free Sleep Aid Tool';
             
             // Update visible text
             document.querySelector('.title').textContent = t.title;
@@ -1127,6 +1138,7 @@
         // Cookie Consent
         function acceptCookies() {
             localStorage.setItem('cookieConsent', 'accepted');
+            gtag('consent', 'update', { analytics_storage: 'granted' });
             document.getElementById('cookieBanner').classList.remove('show');
         }
         
