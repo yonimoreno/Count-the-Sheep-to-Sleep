@@ -48,7 +48,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --midnight-blue: #0f1729;
@@ -71,7 +71,7 @@
         }
 
         body {
-            font-family: 'Lora', serif;
+            font-family: 'Hanken Grotesk', system-ui, sans-serif;
             background: linear-gradient(to bottom, 
                 var(--midnight-blue) 0%, 
                 var(--deep-navy) 60%, 
@@ -175,7 +175,7 @@
         }
 
         .title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Fraunces', Georgia, serif;
             font-size: 56px;
             font-weight: 600;
             color: var(--warm-white);
@@ -211,7 +211,7 @@
         }
 
         .counter {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Fraunces', Georgia, serif;
             font-size: 96px;
             font-weight: 400;
             color: var(--warm-white);
@@ -437,7 +437,7 @@
         }
 
         .support-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Fraunces', Georgia, serif;
             font-size: 24px;
             color: var(--warm-white);
             margin-bottom: 10px;
@@ -456,7 +456,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            font-family: 'Lora', serif;
+            font-family: 'Hanken Grotesk', system-ui, sans-serif;
             padding: 14px 36px;
             font-size: 16px;
             background: linear-gradient(135deg, #FFDD00 0%, #FDB915 100%);
@@ -485,7 +485,7 @@
         }
 
         .reset-btn {
-            font-family: 'Lora', serif;
+            font-family: 'Hanken Grotesk', system-ui, sans-serif;
             padding: 16px 48px;
             font-size: 16px;
             background: rgba(180, 167, 214, 0.15);
@@ -553,7 +553,7 @@
             color: var(--soft-lavender);
             border-radius: 15px;
             cursor: pointer;
-            font-family: 'Lora', serif;
+            font-family: 'Hanken Grotesk', system-ui, sans-serif;
             font-size: 12px;
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -614,7 +614,7 @@
             color: var(--warm-white);
             border-radius: 25px;
             cursor: pointer;
-            font-family: 'Lora', serif;
+            font-family: 'Hanken Grotesk', system-ui, sans-serif;
             font-size: 14px;
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -661,8 +661,8 @@
         .night.on{opacity:.88}
         .night.done{pointer-events:auto;cursor:pointer}
         .about{position:relative;z-index:10;max-width:720px;margin:0 auto;padding:30px 24px 50px;line-height:1.75;color:rgba(255,254,249,.82)}
-        .about h2{font-family:'Playfair Display',serif;font-weight:600;font-size:28px;margin-bottom:14px;color:var(--warm-white)}
-        .about h3{font-family:'Playfair Display',serif;font-weight:600;font-size:19px;margin:26px 0 6px;color:var(--soft-lavender)}
+        .about h2{font-family:'Fraunces', Georgia, serif;font-weight:600;font-size:28px;margin-bottom:14px;color:var(--warm-white)}
+        .about h3{font-family:'Fraunces', Georgia, serif;font-weight:600;font-size:19px;margin:26px 0 6px;color:var(--soft-lavender)}
         @media (prefers-reduced-motion:reduce){.star,.moon,.grass-blade{animation:none}}
         .scene{position:relative}
         #fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:none}
@@ -675,6 +675,43 @@
         .breath{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none}
         .ring{width:180px;height:180px;border-radius:50%;border:2px solid rgba(255,254,249,.5);background:radial-gradient(circle,rgba(180,167,214,.28),transparent 70%);transition:transform .1s linear}
         .breath p{margin-top:14px;font-size:20px;letter-spacing:.1em;color:var(--warm-white)}
+
+        /* ---- Design pass: a quiet bedside UI; the accent colour follows the scene ---- */
+        body{--accent:#b4a7d6;--soft-lavender:var(--accent)}
+        body[data-theme="storm"]{--accent:#8fa8c8}
+        body[data-theme="fountain"]{--accent:#7fc8d8}
+        body[data-theme="forest"]{--accent:#8fc9a0}
+        body[data-theme="fire"]{--accent:#f0a050}
+        body[data-theme="space"]{--accent:#a99be8}
+        body[data-theme="ocean"]{--accent:#58b8d8}
+        a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+        .header{padding:26px 20px 0}
+        .title{font-size:clamp(22px,3vw,28px);font-weight:400;letter-spacing:.01em;text-shadow:none;margin:0}
+        .subtitle{font-size:15px;text-transform:none;letter-spacing:0;opacity:.65;margin-top:4px}
+        .counter-container{margin:clamp(28px,6vh,64px) 0 0}
+        .counter-label{font-size:15px;text-transform:none;letter-spacing:.02em;opacity:.75;margin:0 0 4px;color:var(--accent)}
+        .counter{font-size:clamp(88px,17vw,190px);font-weight:300;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;text-shadow:none}
+        .dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(5,8,15,.92) 30%,rgba(5,8,15,0))}
+        .dock .themes,.dock .tools{margin:0;max-width:100%}
+        .dock .themes{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none;padding:2px}
+        .dock .themes::-webkit-scrollbar{display:none}
+        @media (min-width:760px){.dock .themes{justify-content:center}}
+        .tool-btn{min-height:44px;padding:0 16px;font-size:14px;letter-spacing:0;white-space:nowrap;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+        .tool-btn:hover{background:rgba(255,255,255,.1)}
+        .tool-btn[aria-pressed="true"]{background:color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent)}
+        .themes .tool-btn{padding:0 14px;font-size:14px}
+        .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:8px}
+        #vol{width:90px}
+        .ring{border-color:var(--accent)}
+        .controls{padding:40px 20px 190px}
+        .support-section{background:none;border:0;border-top:1px solid rgba(255,255,255,.08);border-radius:0;backdrop-filter:none;padding:28px 0 0;margin-bottom:28px}
+        .coffee-btn{background:transparent;color:var(--warm-white);border:1px solid rgba(255,255,255,.25);box-shadow:none;border-radius:10px;padding:12px 26px;font-size:15px}
+        .coffee-btn:hover{background:rgba(255,255,255,.08)}
+        .reset-btn{background:transparent;border-width:1px;border-radius:10px;padding:12px 28px;letter-spacing:0}
+        .message{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:19px;letter-spacing:0;opacity:.6}
+        .about{max-width:62ch;font-size:16px;line-height:1.75}
+        .about h2{font-weight:400;font-size:clamp(24px,3.4vw,32px);line-height:1.2}
+        .about h3{font-weight:500;font-size:18px;color:var(--accent)}
     </style>
 </head>
 <body>
@@ -712,12 +749,13 @@
     </div>
     
     <div class="controls">
-        <div class="themes" id="themes" role="group" aria-label="Theme"></div>
+        <div class="dock" id="dock"><div class="themes" id="themes" role="group" aria-label="Theme"></div>
         <div class="tools">
-            <button class="tool-btn" id="soundBtn" aria-pressed="false">🌙 <span id="soundLabel">Soft noise</span></button>
-            <button class="tool-btn" id="breathBtn" aria-pressed="false">🫁 <span id="breathLbl">Breathe 4-7-8</span></button>
+            <button class="tool-btn" id="soundBtn" aria-pressed="false"><span id="soundLabel">Soft noise</span></button>
+            <button class="tool-btn" id="breathBtn" aria-pressed="false"><span id="breathLbl">Breathe 4-7-8</span></button>
             <input type="range" id="vol" min="0" max="100" value="50" aria-label="Volume">
-            <button class="tool-btn" id="timerBtn">⏱️ <span id="timerLabel">Sleep timer: off</span></button>
+            <button class="tool-btn" id="timerBtn"><span id="timerLabel">Sleep timer: off</span></button>
+        </div>
         </div>
         <div class="support-section">
             <h3 class="support-title">Enjoying the Sheep?</h3>
@@ -1312,10 +1350,10 @@
             if (rain) { stopNoise(0.6); setTimeout(startNoise, 700); }
             if (k === 'meadow') applyTranslations(); else syncTools();
         }
-        [['meadow', '🐑'], ['storm', '⛈️'], ['fountain', '⛲'], ['forest', '🌿'], ['fire', '🔥'], ['space', '✨'], ['ocean', '🐠']].forEach(([k, e]) => {
+        [['meadow', '#b4a7d6'], ['storm', '#8fa8c8'], ['fountain', '#7fc8d8'], ['forest', '#8fc9a0'], ['fire', '#f0a050'], ['space', '#a99be8'], ['ocean', '#58b8d8']].forEach(([k, e]) => {
             const b = document.createElement('button');
             b.className = 'tool-btn'; b.dataset.t = k; b.setAttribute('aria-pressed', String(k === theme));
-            b.innerHTML = e + ' <span></span>'; b.addEventListener('click', () => setTheme(k));
+            b.innerHTML = '<i class="dot" style="--c:' + e + '"></i><span></span>'; b.addEventListener('click', () => setTheme(k));
             document.getElementById('themes').appendChild(b);
         });
         setInterval(() => { if (theme !== 'meadow' && !paused && !document.hidden) ev(); }, 3000);
