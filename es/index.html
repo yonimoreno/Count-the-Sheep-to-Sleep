@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="theme-color" content="#0f1729">
+    <link rel="manifest" href="/manifest.webmanifest">
     <!-- Primary Meta Tags -->
     <title>Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido</title>
     <meta name="title" content="Contar Ovejas Online - Herramienta Gratis para Dormir | Duérmete Rápido">
@@ -663,9 +664,21 @@
         .about h2{font-family:'Playfair Display',serif;font-weight:600;font-size:28px;margin-bottom:14px;color:var(--warm-white)}
         .about h3{font-family:'Playfair Display',serif;font-weight:600;font-size:19px;margin:26px 0 6px;color:var(--soft-lavender)}
         @media (prefers-reduced-motion:reduce){.star,.moon,.grass-blade{animation:none}}
+        .scene{position:relative}
+        #fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:none}
+        body[data-theme]:not([data-theme="meadow"]) :is(.stars-container,.moon){display:none}
+        body[data-theme]:not([data-theme="meadow"]) :is(.scene,.scene-container){background:none;border:0;box-shadow:none}
+        .scene[data-theme]:not([data-theme="meadow"]) :is(.grass,.fence,.ground){display:none}
+        .themes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+        .themes .tool-btn{padding:8px 14px;font-size:14px}
+        #vol{width:110px;accent-color:#b4a7d6;align-self:center}
+        .breath{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none}
+        .ring{width:180px;height:180px;border-radius:50%;border:2px solid rgba(255,254,249,.5);background:radial-gradient(circle,rgba(180,167,214,.28),transparent 70%);transition:transform .1s linear}
+        .breath p{margin-top:14px;font-size:20px;letter-spacing:.1em;color:var(--warm-white)}
     </style>
 </head>
 <body>
+    <canvas id="fx" aria-hidden="true"></canvas>
     <div class="stars-container" id="starsContainer"></div>
     <div class="moon"></div>
     
@@ -699,8 +712,11 @@
     </div>
     
     <div class="controls">
+        <div class="themes" id="themes" role="group" aria-label="Theme"></div>
         <div class="tools">
             <button class="tool-btn" id="soundBtn" aria-pressed="false">🌙 <span id="soundLabel">Soft noise</span></button>
+            <button class="tool-btn" id="breathBtn" aria-pressed="false">🫁 <span id="breathLbl">Breathe 4-7-8</span></button>
+            <input type="range" id="vol" min="0" max="100" value="50" aria-label="Volume">
             <button class="tool-btn" id="timerBtn">⏱️ <span id="timerLabel">Sleep timer: off</span></button>
         </div>
         <div class="support-section">
@@ -749,6 +765,7 @@
     </div>
 
     <!-- Cookie Consent Banner -->
+    <div class="breath" id="breath" hidden><div class="ring" id="ring"></div><p id="breathTxt"></p></div>
     <div class="night" id="night"></div>
 
     <div class="cookie-banner" id="cookieBanner">
@@ -1014,6 +1031,7 @@
         
         // Create sheep with custom images
         function createSheep() {
+            if (theme !== 'meadow') return;
             if (paused || document.hidden) return;
             const sheep = document.createElement('div');
             sheep.className = 'sheep jumping';
@@ -1058,7 +1076,7 @@
         const imgJumping = new Image(); imgJumping.src = '/sheep_jumping.png';
 
         // ---- Sleep tools: soft noise, sleep timer, screen fade ----
-        let paused = false, rain = null, gain = null, ac = null, timerMin = 0, timerId = null;
+        let level = 0.5, theme = 'meadow', paused = false, rain = null, gain = null, ac = null, timerMin = 0, timerId = null;
         const aboutEl = document.getElementById('about');
         const aboutEn = aboutEl.innerHTML;
         const aboutText = { es: `<h2>¿No puedes dormir? Cuenta ovejas online</h2>
@@ -1068,8 +1086,8 @@
         <h3>Cómo usarlo</h3>
         <p>Túmbate, baja el brillo, activa el ruido suave si quieres y elige un temporizador: la pantalla se irá oscureciendo y las ovejas pararán solas.</p>` };
         const ui = {
-            en: { sound: 'Soft noise', timer: 'Sleep timer', off: 'off', min: 'min' },
-            es: { sound: 'Ruido suave', timer: 'Temporizador', off: 'apagado', min: 'min' }
+            en: { sound: 'Sound', timer: 'Sleep timer', off: 'off', min: 'min', th_meadow: 'Meadow', th_rain: 'Rain', th_fountain: 'Garden fountain', th_forest: 'Forest', th_space: 'Space', th_ocean: 'Ocean', th_storm: 'Storm', th_fire: 'Campfire', c_storm: 'Lightning', c_fire: 'Sparks', breathe: 'Breathe 4-7-8', b_in: 'Breathe in', b_hold: 'Hold', b_out: 'Breathe out', c_rain: 'Ripples', c_fountain: 'Water bursts', c_forest: 'Fireflies', c_space: 'Shooting stars', c_ocean: 'Fish' },
+            es: { sound: 'Sonido', timer: 'Temporizador', off: 'apagado', min: 'min', th_meadow: 'Prado', th_rain: 'Lluvia', th_fountain: 'Fuente de jardín', th_forest: 'Bosque', th_space: 'Espacio', th_ocean: 'Océano', th_storm: 'Tormenta', th_fire: 'Fogata', c_storm: 'Relámpagos', c_fire: 'Chispas', breathe: 'Respirar 4-7-8', b_in: 'Inhala', b_hold: 'Sostén', b_out: 'Exhala', c_rain: 'Ondas', c_fountain: 'Chorros', c_forest: 'Luciérnagas', c_space: 'Estrellas fugaces', c_ocean: 'Peces' }
         };
         const tr = k => (ui[getUserLanguage()] || ui.en)[k];
         const soundBtn = document.getElementById('soundBtn');
@@ -1079,30 +1097,70 @@
         function syncTools() {
             soundBtn.setAttribute('aria-pressed', String(!!rain));
             document.getElementById('soundLabel').textContent = tr('sound');
+            document.getElementById('breathLbl').textContent = tr('breathe');
+            document.querySelectorAll('#themes button').forEach(b => b.querySelector('span').textContent = tr('th_' + b.dataset.t));
+            if (theme !== 'meadow') document.querySelector('.counter-label').textContent = tr('c_' + theme);
             document.getElementById('timerLabel').textContent = tr('timer') + ': ' + (timerMin ? timerMin + ' ' + tr('min') : tr('off'));
         }
 
-        // Brown noise generated in the browser: no audio files needed
+        // Soundscapes generated in the browser: no audio files needed
+        const rnd = Math.random;
+        function noiseSrc(brown, sec = 4) {
+            const n = ac.sampleRate * sec, b = ac.createBuffer(1, n, ac.sampleRate), d = b.getChannelData(0);
+            let l = 0;
+            for (let i = 0; i < n; i++) { const w = rnd() * 2 - 1; if (brown) { l = (l + 0.02 * w) / 1.02; d[i] = l * 3.5; } else d[i] = w; }
+            const s = ac.createBufferSource(); s.buffer = b; s.loop = true; return s;
+        }
+        const flt = (type, f, q = 1) => { const x = ac.createBiquadFilter(); x.type = type; x.frequency.value = f; x.Q.value = q; return x; };
+        const vol = v => { const x = ac.createGain(); x.gain.value = v; return x; };
         function startNoise() {
             ac = ac || new (window.AudioContext || window.webkitAudioContext)();
             ac.resume();
-            const len = ac.sampleRate * 4, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
-            let last = 0;
-            for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
-            rain = ac.createBufferSource(); rain.buffer = buf; rain.loop = true;
-            const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900;
             gain = ac.createGain(); gain.gain.setValueAtTime(0, ac.currentTime);
-            gain.gain.linearRampToValueAtTime(0.5, ac.currentTime + 3);
-            rain.connect(lp); lp.connect(gain); gain.connect(ac.destination); rain.start();
+            gain.gain.linearRampToValueAtTime(level, ac.currentTime + 3); gain.connect(ac.destination);
+            const nodes = [];
+            const add = (src, ...f) => { let p = src; for (const n of f) { p.connect(n); p = n; } p.connect(gain); src.start(); nodes.push(src); };
+            ({
+                meadow: () => add(noiseSrc(1), flt('lowpass', 900)),
+                storm: () => { add(noiseSrc(0), flt('bandpass', 3000, 0.4), vol(0.5)); add(noiseSrc(1), flt('lowpass', 400), vol(0.8)); },
+                fire: () => { add(noiseSrc(1), flt('lowpass', 700), vol(0.55)); setTimeout(crackle, 200); },
+                rain: () => { add(noiseSrc(0), flt('bandpass', 3500, 0.4), vol(0.35)); add(noiseSrc(1), flt('lowpass', 400), vol(0.6)); },
+                fountain: () => { add(noiseSrc(0), flt('bandpass', 2200, 1.2), vol(0.22)); add(noiseSrc(1), flt('lowpass', 500), vol(0.4)); },
+                forest: () => add(noiseSrc(1), flt('lowpass', 600), vol(0.7)),
+                space: () => [110, 164.8, 220.5].forEach(f => { const o = ac.createOscillator(); o.frequency.value = f; add(o, vol(0.12)); }),
+                ocean: () => { const l = flt('lowpass', 500); add(noiseSrc(1), l); const o = ac.createOscillator(), g = vol(300); o.frequency.value = 0.12; o.connect(g); g.connect(l.frequency); o.start(); nodes.push(o); }
+            })[theme]();
+            rain = nodes;
         }
-
         function stopNoise(fade = 1) {
             if (!rain) return;
-            const r = rain, g = gain; rain = null;
+            const n = rain, g = gain; rain = null;
             g.gain.cancelScheduledValues(ac.currentTime);
             g.gain.setValueAtTime(g.gain.value, ac.currentTime);
             g.gain.linearRampToValueAtTime(0, ac.currentTime + fade);
-            setTimeout(() => r.stop(), fade * 1000 + 100);
+            setTimeout(() => n.forEach(x => x.stop()), fade * 1000 + 100);
+        }
+        function crackle() {
+            if (!rain || theme !== 'fire') return;
+            const t = ac.currentTime, s = noiseSrc(0, 0.2), h = flt('highpass', 1200), g = ac.createGain();
+            g.gain.setValueAtTime(0.5 * rnd(), t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.03 + rnd() * 0.06);
+            s.connect(h); h.connect(g); g.connect(gain); s.start(t); s.stop(t + 0.2); setTimeout(crackle, 50 + rnd() * 450);
+        }
+        function thunder() {
+            if (!rain) return;
+            setTimeout(() => {
+                if (!rain) return;
+                const t = ac.currentTime, s = noiseSrc(1, 6), l = flt('lowpass', 220), g = ac.createGain();
+                g.gain.setValueAtTime(1, t); g.gain.exponentialRampToValueAtTime(0.001, t + 5);
+                s.connect(l); l.connect(g); g.connect(gain); s.start(t); s.stop(t + 6);
+            }, 300 + rnd() * 1200);
+        }
+        function ping(f, d = 0.15, v = 0.12, f2) {
+            if (!rain) return;
+            const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
+            o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+            g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+            o.connect(g); g.connect(gain); o.start(t); o.stop(t + d);
         }
 
         function setTimer(min) {
@@ -1119,6 +1177,166 @@
             syncTools();
         }
 
+        // ---- Themes: each one is a scene, a soundscape and something to count ----
+        const cv = document.getElementById('fx'), cx = cv.getContext('2d'), sc = document.getElementById('scene');
+        const BG = { storm: ['#0b1018', '#03050a'], fire: ['#0a0706', '#030201'], fountain: ['#0f1a1a', '#040809'], forest: ['#0a1a20', '#030807'], space: ['#02030a', '#0b0e26'], ocean: ['#0a5f88', '#021420'] };
+        let W, H, R, bx, by, u, objs = [], deco = [], raf, tipT = 0, surge = 0, lastEv = 0, flash = 0;
+        function size() { const d = devicePixelRatio || 1; W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); }
+        function initObjs() {
+            objs = []; deco = [];
+            const n = { space: 170, forest: 22, ocean: 90 }[theme] || 0;
+            for (let i = 0; i < n; i++) objs.push({ x: rnd() * W, y: rnd() * H, p: rnd() * 6.3, s: 0.3 + rnd() * 1.2, f: 0, c: rnd() });
+            if (theme === 'fountain') for (let i = 0; i < 12; i++) deco.push({ x: W * (i + rnd()) / 12, w: 50 + rnd() * 50, h: 40 + rnd() * 40 });
+            if (theme === 'fire') for (let i = 0; i < 7; i++) deco.push({ x: W * (i + rnd()) / 7, h: H * (0.35 + 0.2 * rnd()) });
+            if (theme === 'forest') for (let l = 0; l < 3; l++) for (let i = 0; i < 9; i++) deco.push({ l, x: W * (i + rnd()) / 9, h: H * (0.3 + 0.12 * l + 0.15 * rnd()) });
+            if (theme === 'ocean') for (let i = 0; i < 14; i++) deco.push({ x: W * i / 13 + rnd() * 40, h: H * (0.15 + 0.25 * rnd()), p: rnd() * 6 });
+        }
+        const glow = (x, y, r, c, a) => { const g = cx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`); cx.fillStyle = g; cx.fillRect(x - r, y - r, 2 * r, 2 * r); };
+        const add = fn => { cx.globalCompositeOperation = 'lighter'; fn(); cx.globalCompositeOperation = 'source-over'; };
+        const fog = (y, c, a) => { const g = cx.createLinearGradient(0, y - H * 0.12, 0, y + H * 0.08); g.addColorStop(0, `rgba(${c},0)`); g.addColorStop(0.5, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`); cx.fillStyle = g; cx.fillRect(0, y - H * 0.12, W, H * 0.2); };
+        const hill = (base, amp, seed, col) => { cx.fillStyle = col; cx.beginPath(); cx.moveTo(0, H); for (let x = 0; x <= W; x += 8) cx.lineTo(x, base - amp * (Math.sin(x * 0.004 + seed) + 0.5 * Math.sin(x * 0.011 + seed * 2) + 0.25 * Math.sin(x * 0.027 + seed * 3))); cx.lineTo(W, H); cx.fill(); };
+        const tree = (x, h, col) => { const w = h * 0.28; cx.fillStyle = col; for (let k = 0; k < 3; k++) { const y0 = H - h + k * h * 0.28, ww = w * (0.5 + 0.25 * k); cx.beginPath(); cx.moveTo(x, y0); cx.lineTo(x + ww, y0 + h * 0.38); cx.lineTo(x - ww, y0 + h * 0.38); cx.fill(); } cx.fillRect(x - 3, H - h * 0.2, 6, h * 0.2); };
+        function RF() { objs.push({ k: 'R', x: W * (0.25 + 0.5 * rnd()), y: H * (0.83 + 0.1 * rnd()), r: 0, m: 110 }); ping(1200, 0.25, 0.06, 700); }
+        const ember = sp => ({ k: 'E', x: bx + (rnd() - 0.5) * 50 * u, y: by - 10 * u, vx: (rnd() - 0.5) * sp, vy: -(0.6 + rnd() * 1.4) * sp, l: 1 });
+        function ev() {
+            count++; counterElement.textContent = count; counterElement.classList.add('increment');
+            setTimeout(() => counterElement.classList.remove('increment'), 500);
+            lastEv = performance.now();
+            ({
+                rain: RF, storm: () => { flash = 1; thunder(); }, fire: () => { for (let i = 0; i < 14; i++) objs.push(ember(2)); ping(160, 0.08, 0.2, 90); },
+                fountain: () => { surge = 1; ping(600, 0.35, 0.08, 300); },
+                forest: () => { const f = objs[rnd() * objs.length | 0]; if (f) f.f = 1; ping(3200, 0.08, 0.05); setTimeout(() => ping(3600, 0.08, 0.05), 120); },
+                space: () => { objs.push({ k: 'S', x: W * rnd() * 0.8, y: H * 0.4 * rnd(), l: 0 }); ping(900, 1.2, 0.04, 300); },
+                ocean: () => { const d = rnd() < 0.5 ? 1 : -1, y = H * (0.2 + 0.5 * rnd()), x = d > 0 ? -60 : W + 60; for (let i = 0; i < 6; i++) objs.push({ k: 'F', x: x - d * i * 40, y: y + (i % 2 ? 1 : -1) * i * 9, d, z: i ? 0.55 : 1, p: rnd() * 6 }); ping(350, 0.1, 0.1, 900); }
+            })[theme]();
+        }
+        const D = {
+            rain() {
+                hill(H * 0.72, H * 0.07, 1, '#0b1219'); fog(H * 0.74, '110,140,170', 0.1); hill(H * 0.8, H * 0.045, 3, '#070c11');
+                const w = cx.createLinearGradient(0, H * 0.8, 0, H); w.addColorStop(0, '#0d1824'); w.addColorStop(1, '#04070a'); cx.fillStyle = w; cx.fillRect(0, H * 0.8, W, H * 0.2);
+                const st = theme === 'storm'; for (let i = 0; i < (st ? 7 : 3); i++) objs.push({ k: 'd', x: rnd() * W * 1.1, y: -20, z: rnd() });
+                if (rnd() < (st ? 0.002 : 0.0007)) { flash = 1; if (st) thunder(); } flash *= 0.9;
+                if (flash > 0.02) { cx.fillStyle = `rgba(180,200,255,${flash * 0.22})`; cx.fillRect(0, 0, W, H); }
+            },
+            fountain(t) {
+                surge *= 0.97;
+                cx.fillStyle = '#0a1a12';
+                for (const d of deco) { cx.beginPath(); cx.ellipse(d.x, by - 30 * u, d.w * u * 0.8, d.h * u * 0.7, 0, 0, 7); cx.fill(); }
+                tree(W * 0.08, H * 0.5, '#06120d'); tree(W * 0.93, H * 0.45, '#06120d');
+                fog(by, '130,150,150', 0.12);
+                for (const sx of [-1, 1]) {
+                    const lx = bx + sx * Math.min(260 * u, W * 0.4);
+                    cx.fillStyle = '#1b1f1e'; cx.fillRect(lx - 2 * u, by - 90 * u, 4 * u, 90 * u);
+                    add(() => glow(lx, by - 96 * u, 90 * u, '255,190,110', 0.3 + 0.04 * Math.sin(t * 4 + sx)));
+                }
+                cx.fillStyle = '#2c3330'; cx.beginPath(); cx.ellipse(bx, by, 150 * u, 34 * u, 0, 0, 7); cx.fill();
+                cx.fillStyle = '#0f232b'; cx.beginPath(); cx.ellipse(bx, by - 4 * u, 132 * u, 27 * u, 0, 0, 7); cx.fill();
+                cx.strokeStyle = 'rgba(180,190,185,.25)'; cx.lineWidth = 2; cx.beginPath(); cx.ellipse(bx, by, 150 * u, 34 * u, 0, 0, 7); cx.stroke();
+                cx.fillStyle = '#3a423f'; cx.fillRect(bx - 8 * u, by - 14 * u, 16 * u, 10 * u);
+                const top = by - 14 * u, n = 3 + Math.round(surge * 5);
+                for (let i = 0; i < n; i++) objs.push({ k: 'W', x: bx + (rnd() - 0.5) * 4 * u, y: top, vx: (rnd() - 0.5) * 0.5 * u, vy: -(7 + rnd() * 1.5 + surge * 3.5) * u, g: 0.19 * u });
+                for (let i = 0; i < 2; i++) { const sg = rnd() < 0.5 ? -1 : 1; objs.push({ k: 'W', x: bx + sg * 10 * u, y: top, vx: sg * (1.1 + rnd() * 0.9) * u, vy: -(4.8 + rnd() * 1.2 + surge * 1.5) * u, g: 0.19 * u }); }
+                add(() => glow(bx, by - 70 * u, 130 * u, '170,210,240', 0.1 + 0.1 * surge));
+            },
+            fire(t) {
+                for (const d of deco) tree(d.x, d.h, '#060403');
+                const fx = bx, fy = by + 10 * u, gr = cx.createRadialGradient(fx, fy, 0, fx, fy, H * 0.6);
+                gr.addColorStop(0, 'rgba(120,50,10,.35)'); gr.addColorStop(1, 'transparent'); cx.fillStyle = gr; cx.fillRect(0, 0, W, H);
+                cx.fillStyle = '#1b110a'; for (const a of [-0.35, 0.35]) { cx.save(); cx.translate(fx, fy); cx.rotate(a); cx.fillRect(-70 * u, -7 * u, 140 * u, 14 * u); cx.restore(); }
+                add(() => {
+                    glow(fx, fy - 40 * u, 280 * u, '255,120,40', 0.22 + 0.06 * Math.sin(t * 9));
+                    for (let i = 0; i < 7; i++) {
+                        const k = i - 3, h = (70 + 30 * Math.sin(t * 7 + i * 2) + 15 * Math.sin(t * 13 + i)) * u, w = (18 - Math.abs(k) * 2) * u, x = fx + k * 9 * u;
+                        const g = cx.createLinearGradient(x, fy, x, fy - h); g.addColorStop(0, 'rgba(255,200,80,.9)'); g.addColorStop(0.5, 'rgba(255,110,20,.6)'); g.addColorStop(1, 'rgba(255,60,0,0)');
+                        cx.fillStyle = g; cx.beginPath(); cx.moveTo(x - w, fy); cx.quadraticCurveTo(x - w * 0.6, fy - h * 0.5, x + Math.sin(t * 6 + i) * 6 * u, fy - h); cx.quadraticCurveTo(x + w * 0.6, fy - h * 0.5, x + w, fy); cx.fill();
+                    }
+                });
+                if (rnd() < 0.25) objs.push(ember(1));
+            },
+            forest(t) {
+                add(() => { glow(W * 0.72, H * 0.14, W * 0.35, '190,215,255', 0.22); cx.fillStyle = 'rgba(190,215,255,.035)'; for (let i = 0; i < 4; i++) { cx.beginPath(); cx.moveTo(W * 0.72, H * 0.14); cx.lineTo(W * (0.2 + i * 0.18), H); cx.lineTo(W * (0.3 + i * 0.18), H); cx.fill(); } });
+                cx.fillStyle = 'rgba(235,245,255,.85)'; cx.beginPath(); cx.arc(W * 0.72, H * 0.14, 14, 0, 7); cx.fill();
+                const col = ['#0d2127', '#081519', '#030a0b'];
+                for (let l = 0; l < 3; l++) { for (const d of deco) if (d.l === l) tree(d.x, d.h, col[l]); if (l < 2) fog(H * (0.9 - l * 0.05), '120,160,170', 0.12); }
+            },
+            space(t) {
+                cx.save(); cx.translate(W / 2, H * 0.4); cx.rotate(-0.45); const mg = cx.createLinearGradient(0, -H * 0.22, 0, H * 0.22); mg.addColorStop(0, 'transparent'); mg.addColorStop(0.5, 'rgba(170,160,220,.16)'); mg.addColorStop(1, 'transparent'); cx.fillStyle = mg; cx.fillRect(-W, -H * 0.22, 2 * W, H * 0.44); cx.restore();
+                add(() => { glow(W * 0.25, H * 0.35, W * 0.3, '110,70,190', 0.1); glow(W * 0.65, H * 0.2, W * 0.25, '60,110,200', 0.08); });
+                const pr = H * 0.6, px = W * 0.78, py = H + pr * 0.55;
+                cx.fillStyle = '#04060e'; cx.beginPath(); cx.arc(px, py, pr, 0, 7); cx.fill();
+                const g2 = cx.createRadialGradient(px, py, pr * 0.96, px, py, pr * 1.06); g2.addColorStop(0, 'rgba(90,160,255,.55)'); g2.addColorStop(1, 'transparent'); cx.fillStyle = g2; cx.beginPath(); cx.arc(px, py, pr * 1.06, 0, 7); cx.fill();
+            },
+            ocean(t) {
+                add(() => { for (let i = 0; i < 5; i++) { const x = W * (i * 0.25 - 0.05) + Math.sin(t * 0.25 + i) * 40; cx.fillStyle = 'rgba(150,220,255,.05)'; cx.beginPath(); cx.moveTo(x, 0); cx.lineTo(x + 70, 0); cx.lineTo(x - 120, H); cx.lineTo(x - 230, H); cx.fill(); } });
+                const fl = cx.createLinearGradient(0, H * 0.85, 0, H); fl.addColorStop(0, 'transparent'); fl.addColorStop(1, '#010a0e'); cx.fillStyle = fl; cx.fillRect(0, H * 0.85, W, H * 0.15);
+                cx.lineCap = 'round'; cx.strokeStyle = 'rgba(8,40,32,.8)'; cx.lineWidth = 8;
+                for (const d of deco) { cx.beginPath(); cx.moveTo(d.x, H); cx.quadraticCurveTo(d.x + Math.sin(t * 0.8 + d.p) * 25, H - d.h * 0.5, d.x + Math.sin(t * 0.8 + d.p + 1) * 35, H - d.h); cx.stroke(); }
+                if (rnd() < 0.03) objs.push({ k: 'b', x: rnd() * W, y: H + 5, v: 0.5 + rnd() });
+            }
+        };
+        D.storm = D.rain;
+        function frame(ts) {
+            raf = requestAnimationFrame(frame);
+            if (paused || document.hidden) return;
+            R = sc.getBoundingClientRect(); u = Math.max(0.6, Math.min(R.width / 460, R.height / 300)); bx = R.left + R.width / 2; by = R.top + R.height * 0.8;
+            const t = ts / 1000, g = cx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, BG[theme][0]); g.addColorStop(1, BG[theme][1]);
+            cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+            D[theme](t);
+            objs = objs.filter(o => {
+                if (o.k === 'd') { const v = 6 + o.z * 14; o.y += v; o.x -= v * 0.12; cx.strokeStyle = `rgba(170,200,230,${0.12 + 0.35 * o.z})`; cx.lineWidth = 0.6 + o.z; cx.beginPath(); cx.moveTo(o.x, o.y); cx.lineTo(o.x + v * 0.15, o.y - (6 + o.z * 16)); cx.stroke(); if (o.y > H * (0.8 + 0.17 * o.z)) { if (rnd() < 0.1) objs.push({ k: 'R', x: o.x, y: o.y, r: 0, m: 26 }); return false; } return true; }
+                if (o.k === 'R') { o.r += o.m > 50 ? 1.1 : 0.6; cx.strokeStyle = `rgba(200,230,255,${Math.max(0, 0.6 - o.r / o.m)})`; cx.lineWidth = 1.2; cx.beginPath(); cx.ellipse(o.x, o.y, o.r, o.r * 0.3, 0, 0, 7); cx.stroke(); return o.r < o.m; }
+                if (o.k === 'W') { o.x += o.vx; o.y += o.vy; o.vy += o.g; cx.strokeStyle = 'rgba(200,230,245,.55)'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(o.x, o.y); cx.lineTo(o.x - o.vx * 1.5, o.y - o.vy * 1.5); cx.stroke(); if (o.y > by - 4 * u && o.vy > 0) { if (rnd() < 0.2) objs.push({ k: 'R', x: o.x, y: by - 4 * u, r: 0, m: 36 }); return false; } return true; }
+                if (o.k === 'E') { o.x += o.vx; o.y += o.vy; o.vx += (rnd() - 0.5) * 0.08; o.l -= 0.012; add(() => glow(o.x, o.y, 5 * u * o.l + 2, '255,150,50', o.l)); return o.l > 0; }
+                if (o.k === 'b') { o.y -= o.v; cx.strokeStyle = 'rgba(200,235,255,.4)'; cx.lineWidth = 1; cx.beginPath(); cx.arc(o.x + Math.sin(o.y / 20) * 4, o.y, 2 + o.v, 0, 7); cx.stroke(); return o.y > -10; }
+                if (o.k === 'S') { o.l++; const x = o.x + o.l * 7, y = o.y + o.l * 3.5, gr = cx.createLinearGradient(x, y, x - 140, y - 70); gr.addColorStop(0, 'rgba(255,255,255,.95)'); gr.addColorStop(1, 'transparent'); cx.strokeStyle = gr; cx.lineWidth = 1.6; cx.beginPath(); cx.moveTo(x, y); cx.lineTo(x - 140, y - 70); cx.stroke(); return o.l < 80; }
+                if (o.k === 'F') {
+                    o.x += o.d * 2 * o.z + o.d * 0.4; const s = 34 * o.z, wag = Math.sin(t * 8 + o.p) * 5 * o.z;
+                    cx.save(); cx.translate(o.x, o.y + Math.sin(o.x / 40) * 5); cx.scale(o.d, 1);
+                    const fg = cx.createLinearGradient(0, -s * 0.4, 0, s * 0.4); fg.addColorStop(0, '#1d3b4d'); fg.addColorStop(0.55, '#8fb0c0'); fg.addColorStop(1, '#d6e4ea'); cx.fillStyle = fg; cx.globalAlpha = 0.55 + 0.4 * o.z;
+                    cx.beginPath(); cx.moveTo(s, 0); cx.bezierCurveTo(s * 0.5, -s * 0.45, -s * 0.4, -s * 0.35, -s * 0.8, wag * 0.3); cx.lineTo(-s * 1.15, -s * 0.4 + wag); cx.lineTo(-s * 1.15, s * 0.4 + wag); cx.lineTo(-s * 0.8, wag * 0.3); cx.bezierCurveTo(-s * 0.4, s * 0.35, s * 0.5, s * 0.4, s, 0); cx.fill();
+                    cx.fillStyle = '#06141c'; cx.beginPath(); cx.arc(s * 0.62, -s * 0.06, s * 0.05, 0, 7); cx.fill(); cx.restore();
+                    return o.x > -160 && o.x < W + 160;
+                }
+                if (theme === 'space') { o.x = (o.x + 0.03 * o.s + W) % W; const c = o.c < 0.2 ? '255,200,170' : o.c > 0.8 ? '170,200,255' : '255,255,245'; cx.fillStyle = `rgba(${c},${0.35 + 0.5 * Math.sin(t * o.s + o.p)})`; cx.fillRect(o.x, o.y, o.s * 1.3, o.s * 1.3); }
+                if (theme === 'ocean') { o.y = (o.y + 0.1 * o.s) % H; o.x += Math.sin(t + o.p) * 0.15; cx.fillStyle = `rgba(200,230,255,${0.1 + 0.25 * o.c})`; cx.fillRect(o.x, o.y, 1 + o.s, 1 + o.s); }
+                if (theme === 'forest') { o.x += Math.sin(t * o.s + o.p) * 0.4; o.y += Math.cos(t * o.s * 0.7 + o.p) * 0.3; o.f *= 0.97; const a = 0.3 + 0.3 * Math.sin(t * 2 + o.p) + o.f; add(() => glow(o.x, o.y, 7 + o.f * 24, '220,255,140', Math.min(a, 1))); }
+                return true;
+            });
+            const vg = cx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.8); vg.addColorStop(0, 'transparent'); vg.addColorStop(1, 'rgba(0,0,0,.55)'); cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
+        }
+        function setTheme(k, save = true) {
+            theme = k; try { if (save) localStorage.setItem('theme', k); } catch (e) {}
+            sc.dataset.theme = document.body.dataset.theme = k; cancelAnimationFrame(raf); cv.style.display = k === 'meadow' ? 'none' : 'block';
+            if (k !== 'meadow') { size(); initObjs(); lastEv = performance.now(); raf = requestAnimationFrame(frame); }
+            document.querySelectorAll('#themes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.t === k)));
+            if (rain) { stopNoise(0.6); setTimeout(startNoise, 700); }
+            if (k === 'meadow') applyTranslations(); else syncTools();
+        }
+        [['meadow', '🐑'], ['storm', '⛈️'], ['fountain', '⛲'], ['forest', '🌿'], ['fire', '🔥'], ['space', '✨'], ['ocean', '🐠']].forEach(([k, e]) => {
+            const b = document.createElement('button');
+            b.className = 'tool-btn'; b.dataset.t = k; b.setAttribute('aria-pressed', String(k === theme));
+            b.innerHTML = e + ' <span></span>'; b.addEventListener('click', () => setTheme(k));
+            document.getElementById('themes').appendChild(b);
+        });
+        setInterval(() => { if (theme !== 'meadow' && !paused && !document.hidden) ev(); }, 3000);
+        addEventListener('resize', () => { if (theme !== 'meadow') { size(); initObjs(); } });
+        let savedTheme = 'meadow'; try { savedTheme = localStorage.getItem('theme') || 'meadow'; } catch (e) {}
+        if (BG[savedTheme]) setTheme(savedTheme, false); else syncTools();
+
+        document.getElementById('vol').addEventListener('input', e => { level = e.target.value / 100; if (rain) gain.gain.setTargetAtTime(level, ac.currentTime, 0.1); });
+        let br = null;
+        const bBtn = document.getElementById('breathBtn'), bOv = document.getElementById('breath'), ring = document.getElementById('ring'), bTx = document.getElementById('breathTxt');
+        bBtn.addEventListener('click', () => {
+            if (br) { clearInterval(br); br = null; bOv.hidden = true; bBtn.setAttribute('aria-pressed', 'false'); return; }
+            bBtn.setAttribute('aria-pressed', 'true'); bOv.hidden = false;
+            const t0 = performance.now();
+            br = setInterval(() => {
+                const x = ((performance.now() - t0) / 1000) % 19; let k, z;
+                if (x < 4) { k = 'in'; z = 0.5 + 0.5 * x / 4; } else if (x < 11) { k = 'hold'; z = 1; } else { k = 'out'; z = 1 - 0.5 * (x - 11) / 8; }
+                ring.style.transform = `scale(${z})`; bTx.textContent = tr('b_' + k);
+            }, 100);
+        });
+        if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
         soundBtn.addEventListener('click', () => { rain ? stopNoise() : startNoise(); syncTools(); });
         timerBtn.addEventListener('click', () => { const o = [0, 15, 30, 60]; setTimer(o[(o.indexOf(timerMin) + 1) % o.length]); });
         night.addEventListener('click', () => setTimer(0));
